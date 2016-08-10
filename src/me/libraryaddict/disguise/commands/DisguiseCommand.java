@@ -38,7 +38,19 @@ public class DisguiseCommand extends BaseDisguiseCommand {
             return true;
         }
 
-       if (Arrays.toString(args).toLowerCase().contains("item_frame") || Arrays.toString(args).toLowerCase().contains("item frame")) {
+       if (Arrays.toString(args).toLowerCase().contains("item_frame")) {
+            sender.sendMessage(ChatColor.RED + "That disguise is forbidden.");
+            return true;
+        }
+       
+        if(Arrays.toString(args).toLowerCase().contains("itemframe")) {
+            sender.sendMessage(ChatColor.RED + "That disguise is forbidden.");
+            return true;
+           
+        }
+        
+        if(args.toString().contains(":"))
+        {
             sender.sendMessage(ChatColor.RED + "That disguise is forbidden.");
             return true;
         }
