@@ -314,7 +314,16 @@ public class DisguiseAPI
         {
             ((TargetedDisguise) disguise).removePlayer(observer);
         }
+        
         disguiseEntity(entity, disguise);
+    }
+    
+    public static void disableDisguises() {
+    DisallowedDisguises.disabled = true;
+    }
+    
+    public static void enableDisguises() {
+      DisallowedDisguises.disabled = false;
     }
 
     public static void disguiseToPlayers(Entity entity, Disguise disguise, Collection playersToViewDisguise)

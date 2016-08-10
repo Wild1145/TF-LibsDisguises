@@ -41,20 +41,12 @@ public class MiscDisguise extends TargetedDisguise
         {
         // The only disguises which should use a custom data.
         case PAINTING:
-            ((PaintingWatcher) getWatcher()).setArt(Art.values()[Math.max(0, id) % Art.values().length]);
             break;
         case FALLING_BLOCK:
-            ((FallingBlockWatcher) getWatcher()).setBlock(new ItemStack(Math.max(1, id), 1, (short) Math.max(0, data)));
             break;
         case SPLASH_POTION:
-            ((SplashPotionWatcher) getWatcher()).setPotionId(Math.max(0, id));
             break;
         case DROPPED_ITEM:
-
-            if (id > 0)
-            {
-                ((DroppedItemWatcher) getWatcher()).setItemStack(new ItemStack(id, Math.max(1, data)));
-            }
             break;
         case FISHING_HOOK: // Entity ID of whoever is holding fishing rod
         case ARROW: // Entity ID of shooter. Used for "Is he on this scoreboard team and do I render it moving through his body?"

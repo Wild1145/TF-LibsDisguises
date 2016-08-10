@@ -24,11 +24,9 @@ import me.libraryaddict.disguise.commands.DisguiseViewSelf;
 import me.libraryaddict.disguise.commands.EntityDisguiseCommand;
 import me.libraryaddict.disguise.commands.HelpDisguiseCommand;
 import me.libraryaddict.disguise.commands.LibsDisguisesCommand;
-import me.libraryaddict.disguise.commands.PlayerDisguiseCommand;
 import me.libraryaddict.disguise.commands.RadiusDisguiseCommand;
 import me.libraryaddict.disguise.commands.UndisguiseCommand;
 import me.libraryaddict.disguise.commands.UndisguiseEntityCommand;
-import me.libraryaddict.disguise.commands.UndisguisePlayerCommand;
 import me.libraryaddict.disguise.commands.UndisguiseRadiusCommand;
 import me.libraryaddict.disguise.disguisetypes.DisguiseType;
 import me.libraryaddict.disguise.disguisetypes.FlagType;
@@ -99,11 +97,8 @@ public class LibsDisguises extends JavaPlugin
         listener = new DisguiseListener(this);
 
         Bukkit.getPluginManager().registerEvents(listener, this);
-
         getCommand("disguise").setExecutor(new DisguiseCommand());
         getCommand("undisguise").setExecutor(new UndisguiseCommand());
-        getCommand("disguiseplayer").setExecutor(new PlayerDisguiseCommand());
-        getCommand("undisguiseplayer").setExecutor(new UndisguisePlayerCommand());
         getCommand("undisguiseentity").setExecutor(new UndisguiseEntityCommand());
         getCommand("disguiseentity").setExecutor(new EntityDisguiseCommand());
         getCommand("disguiseradius").setExecutor(new RadiusDisguiseCommand(getConfig().getInt("DisguiseRadiusMax")));
@@ -112,6 +107,7 @@ public class LibsDisguises extends JavaPlugin
         getCommand("disguiseclone").setExecutor(new CloneDisguiseCommand());
         getCommand("libsdisguises").setExecutor(new LibsDisguisesCommand());
         getCommand("disguiseviewself").setExecutor(new DisguiseViewSelf());
+        
 
         registerValues();
 

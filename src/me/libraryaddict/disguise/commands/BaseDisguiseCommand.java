@@ -28,6 +28,7 @@ import com.comphenix.protocol.wrappers.WrappedGameProfile;
 import com.comphenix.protocol.wrappers.WrappedSignedProperty;
 import com.google.gson.Gson;
 
+import me.libraryaddict.disguise.DisallowedDisguises;
 import me.libraryaddict.disguise.disguisetypes.AnimalColor;
 import me.libraryaddict.disguise.disguisetypes.Disguise;
 import me.libraryaddict.disguise.disguisetypes.DisguiseType;
@@ -59,16 +60,18 @@ public abstract class BaseDisguiseCommand implements CommandExecutor
     }
 
     protected ArrayList<String> getAllowedDisguises(HashMap<DisguiseType, HashMap<ArrayList<String>, Boolean>> hashMap)
-    {
+    { 
         ArrayList<String> allowedDisguises = new ArrayList<>();
-
+ 
         for (DisguiseType type : hashMap.keySet())
         {
-            allowedDisguises.add(type.toReadable().replace(" ", "_"));
+               if(DisallowedDisguises.isAllowed(type) && !type.isUnknown()) {
+                allowedDisguises.add(type.toReadable().replace(" ", "_")); 
+               }
         }
 
         Collections.sort(allowedDisguises, String.CASE_INSENSITIVE_ORDER);
-
+     
         return allowedDisguises;
     }
 

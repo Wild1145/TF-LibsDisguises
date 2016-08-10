@@ -66,6 +66,10 @@ public class UndisguiseRadiusCommand implements CommandExecutor
                 {
                     continue;
                 }
+                if(entity instanceof Player) 
+                {
+                    continue;
+                }
                 if (DisguiseAPI.isDisguised(entity))
                 {
                     DisguiseAPI.undisguiseToAll(entity);
