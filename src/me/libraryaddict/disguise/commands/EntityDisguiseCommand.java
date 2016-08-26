@@ -25,6 +25,13 @@ public class EntityDisguiseCommand extends BaseDisguiseCommand {
             sender.sendMessage(ChatColor.RED + "You may not use this command from the console!");
             return true;
         }
+                
+        if(args.length >= 2) {
+            if(args[1].contains(":")) {
+                sender.sendMessage("That disguise is forbidden.");
+                return true;
+            }
+        }
         Disguise disguise;
         try {
             disguise = parseDisguise(sender, args, getPermissions(sender));
@@ -49,17 +56,25 @@ public class EntityDisguiseCommand extends BaseDisguiseCommand {
            
         }
         
-        if(args.toString().contains(":"))
-        {
-            sender.sendMessage(ChatColor.RED + "That disguise is forbidden.");
-            return true;
-        }
-        if (Arrays.toString(args).contains("portal")) {
+
+        if (Arrays.toString(args).toLowerCase().contains("portal")) {
             sender.sendMessage(ChatColor.RED + "That disguise is forbidden.");
             return true;
         }
         
+          if(Arrays.toString(args).toLowerCase().contains("hay_block")) {
+            sender.sendMessage(ChatColor.RED + "That disguise is forbidden.");
+            return true;
+        }
         
+           if(Arrays.toString(args).contains("fire")) {
+              sender.sendMessage(ChatColor.RED + "That disguise is forbidden.");
+          }
+          
+         if(Arrays.toString(args).contains("carrot")) {
+            sender.sendMessage(ChatColor.RED + "That disguise is forbidden.");
+            return true;
+        }
 
         if (!DisallowedDisguises.disabled) {
             if (DisallowedDisguises.isAllowed(disguise)) {

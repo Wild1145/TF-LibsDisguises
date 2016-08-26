@@ -1,5 +1,6 @@
 package me.libraryaddict.disguise.commands;
 
+import com.sun.xml.internal.fastinfoset.util.CharArray;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -24,6 +25,13 @@ public class DisguiseCommand extends BaseDisguiseCommand {
             sender.sendMessage(ChatColor.RED + "You may not use this command from the console!");
             return true;
         }
+        
+        if(args.length >= 2) {
+            if(args[1].contains(":")) {
+                sender.sendMessage("That disguise is forbidden.");
+                return true;
+            }
+        }
         Disguise disguise;
         try {
             disguise = parseDisguise(sender, args, getPermissions(sender));
@@ -34,31 +42,44 @@ public class DisguiseCommand extends BaseDisguiseCommand {
 
             return true;
         } catch (Exception ex) {
-            ex.printStackTrace();
+
             return true;
         }
 
-       if (Arrays.toString(args).toLowerCase().contains("item_frame")) {
+        if (Arrays.toString(args).toLowerCase().contains("item_frame")) {
+            sender.sendMessage(ChatColor.RED + "That disguise is forbidden.");
+            return true;
+        }
+
+        if (Arrays.toString(args).toLowerCase().contains("itemframe")) {
+            sender.sendMessage(ChatColor.RED + "That disguise is forbidden.");
+            return true;
+
+        }
+
+        if (Arrays.toString(args).toLowerCase().contains("hay_block")) {
+            sender.sendMessage(ChatColor.RED + "That disguise is forbidden.");
+            return true;
+        }
+        if (Arrays.toString(args).toLowerCase().contains("portal")) {
+            sender.sendMessage(ChatColor.RED + "That disguise is forbidden.");
+            return true;
+        }
+
+        if (Arrays.toString(args).contains("90")) {
+            sender.sendMessage(ChatColor.RED + "That disguise is forbidden.");
+            return true;
+        }
+        
+         if(Arrays.toString(args).contains("fire")) {
+              sender.sendMessage(ChatColor.RED + "That disguise is forbidden.");
+          }
+        
+        if(Arrays.toString(args).contains("carrot")) {
             sender.sendMessage(ChatColor.RED + "That disguise is forbidden.");
             return true;
         }
        
-        if(Arrays.toString(args).toLowerCase().contains("itemframe")) {
-            sender.sendMessage(ChatColor.RED + "That disguise is forbidden.");
-            return true;
-           
-        }
-        
-        if(args.toString().contains(":"))
-        {
-            sender.sendMessage(ChatColor.RED + "That disguise is forbidden.");
-            return true;
-        }
-        if (Arrays.toString(args).contains("portal")) {
-            sender.sendMessage(ChatColor.RED + "That disguise is forbidden.");
-            return true;
-        }
-        
         if (DisguiseConfig.isNameOfPlayerShownAboveDisguise()) {
             if (disguise.getWatcher() instanceof LivingWatcher) {
                 disguise.getWatcher().setCustomName(((Player) sender).getDisplayName());
@@ -82,8 +103,6 @@ public class DisguiseCommand extends BaseDisguiseCommand {
             sender.sendMessage(ChatColor.RED + "Disguises are disabled.");
             return true;
         }
-
-
 
         if (disguise.isDisguiseInUse()) {
             sender.sendMessage(ChatColor.RED + "Now disguised as a " + disguise.getType().toReadable());
