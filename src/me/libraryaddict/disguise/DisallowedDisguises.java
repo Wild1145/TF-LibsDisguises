@@ -52,9 +52,6 @@ public class DisallowedDisguises {
         if (type.equals(DisguiseType.ENDER_CRYSTAL)) {
             return enderCrystalAllowed;
         }
-        if(type.equals(DisguiseType.DROPPED_ITEM)) {
-            
-        }
             return true;
   
     }
