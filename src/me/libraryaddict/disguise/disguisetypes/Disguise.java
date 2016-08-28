@@ -42,6 +42,7 @@ import me.libraryaddict.disguise.utilities.ReflectionManager;
 
 public abstract class Disguise
 {
+
     private boolean disguiseInUse;
     private DisguiseType disguiseType;
     private Entity entity;
@@ -68,8 +69,7 @@ public abstract class Disguise
     /**
      * Seems I do this method so I can make cleaner constructors on disguises..
      *
-     * @param newType
-     *            The disguise
+     * @param newType The disguise
      */
     protected void createDisguise(DisguiseType newType)
     {
@@ -99,8 +99,7 @@ public abstract class Disguise
         {
             // Construct the FlagWatcher from the stored class
             setWatcher((FlagWatcher) getType().getWatcherClass().getConstructor(Disguise.class).newInstance(this));
-        }
-        catch (Exception e)
+        } catch (Exception e)
         {
             e.printStackTrace();
         }
@@ -111,8 +110,7 @@ public abstract class Disguise
             if (getWatcher() instanceof AgeableWatcher)
             {
                 ((AgeableWatcher) getWatcher()).setBaby(true);
-            }
-            else if (getWatcher() instanceof ZombieWatcher)
+            } else if (getWatcher() instanceof ZombieWatcher)
             {
                 ((ZombieWatcher) getWatcher()).setBaby(true);
             }
@@ -122,8 +120,7 @@ public abstract class Disguise
         if (getType() == DisguiseType.WITHER_SKELETON)
         {
             ((SkeletonWatcher) getWatcher()).setType(SkeletonType.WITHER);
-        }
-        else if (getType() == DisguiseType.STRAY)
+        } else if (getType() == DisguiseType.STRAY)
         {
             ((SkeletonWatcher) getWatcher()).setType(SkeletonType.STRAY);
         } // Else if its a zombie, but the disguise type is a zombie villager. Set the value.
@@ -132,15 +129,15 @@ public abstract class Disguise
             Profession profession = null;
 
             while (profession == null || profession == Profession.NORMAL || profession == Profession.HUSK)
+            {
                 profession = Profession.values()[DisguiseUtilities.random.nextInt(Profession.values().length)];
+            }
 
             ((ZombieWatcher) getWatcher()).setProfession(profession);
-        }
-        else if (getType() == DisguiseType.HUSK)
+        } else if (getType() == DisguiseType.HUSK)
         {
             ((ZombieWatcher) getWatcher()).setProfession(Profession.HUSK);
-        }
-        else if (getType() == DisguiseType.ELDER_GUARDIAN)
+        } else if (getType() == DisguiseType.ELDER_GUARDIAN)
         {
             ((GuardianWatcher) getWatcher()).setElder(true);
         } // Else if its a horse. Set the horse watcher type
@@ -150,8 +147,7 @@ public abstract class Disguise
             {
                 Variant horseType = Variant.valueOf(getType().name());
                 ((HorseWatcher) getWatcher()).setVariant(horseType);
-            }
-            catch (Exception ex)
+            } catch (Exception ex)
             {
                 // Ok.. So it aint a horse
             }
@@ -161,70 +157,70 @@ public abstract class Disguise
 
         switch (getType())
         {
-        case EGG:
-        case ENDER_PEARL:
-        case BAT:
-        case EXPERIENCE_ORB:
-        case FIREBALL:
-        case SMALL_FIREBALL:
-        case SNOWBALL:
-        case SPLASH_POTION:
-        case THROWN_EXP_BOTTLE:
-        case WITHER_SKULL:
-        case FIREWORK:
-            alwaysSendVelocity = true;
-            break;
-        default:
-            alwaysSendVelocity = false;
-            break;
+            case EGG:
+            case ENDER_PEARL:
+            case BAT:
+            case EXPERIENCE_ORB:
+            case FIREBALL:
+            case SMALL_FIREBALL:
+            case SNOWBALL:
+            case SPLASH_POTION:
+            case THROWN_EXP_BOTTLE:
+            case WITHER_SKULL:
+            case FIREWORK:
+                alwaysSendVelocity = true;
+                break;
+            default:
+                alwaysSendVelocity = false;
+                break;
         }
 
         double velocitySpeed = 0.0005;
 
         switch (getType())
         {
-        case FIREWORK:
-            velocitySpeed = -0.040;
-            break;
-        case WITHER_SKULL:
-            velocitySpeed = 0.000001D;
-            break;
-        case ARROW:
-        case TIPPED_ARROW:
-        case SPECTRAL_ARROW:
-        case BOAT:
-        case ENDER_CRYSTAL:
-        case ENDER_DRAGON:
-        case GHAST:
-        case ITEM_FRAME:
-        case MINECART:
-        case MINECART_CHEST:
-        case MINECART_COMMAND:
-        case MINECART_FURNACE:
-        case MINECART_HOPPER:
-        case MINECART_MOB_SPAWNER:
-        case MINECART_TNT:
-        case PAINTING:
-        case PLAYER:
-        case SQUID:
-            velocitySpeed = 0;
-            break;
-        case DROPPED_ITEM:
-        case PRIMED_TNT:
-        case WITHER:
-        case FALLING_BLOCK:
-            velocitySpeed = 0.04;
-            break;
-        case EXPERIENCE_ORB:
-            velocitySpeed = 0.0221;
-            break;
-        case SPIDER:
-        case BAT:
-        case CAVE_SPIDER:
-            velocitySpeed = 0.004;
-            break;
-        default:
-            break;
+            case FIREWORK:
+                velocitySpeed = -0.040;
+                break;
+            case WITHER_SKULL:
+                velocitySpeed = 0.000001D;
+                break;
+            case ARROW:
+            case TIPPED_ARROW:
+            case SPECTRAL_ARROW:
+            case BOAT:
+            case ENDER_CRYSTAL:
+            case ENDER_DRAGON:
+            case GHAST:
+            case ITEM_FRAME:
+            case MINECART:
+            case MINECART_CHEST:
+            case MINECART_COMMAND:
+            case MINECART_FURNACE:
+            case MINECART_HOPPER:
+            case MINECART_MOB_SPAWNER:
+            case MINECART_TNT:
+            case PAINTING:
+            case PLAYER:
+            case SQUID:
+                velocitySpeed = 0;
+                break;
+            case DROPPED_ITEM:
+            case PRIMED_TNT:
+            case WITHER:
+            case FALLING_BLOCK:
+                velocitySpeed = 0.04;
+                break;
+            case EXPERIENCE_ORB:
+                velocitySpeed = 0.0221;
+                break;
+            case SPIDER:
+            case BAT:
+            case CAVE_SPIDER:
+                velocitySpeed = 0.004;
+                break;
+            default:
+                break;
         }
 
         final double vectorY = velocitySpeed;
@@ -255,8 +251,7 @@ public abstract class Disguise
                         if (isRemoveDisguiseOnDeath())
                         {
                             removeDisguise();
-                        }
-                        else
+                        } else
                         {
                             entity = null;
                             watcher = getWatcher().clone(disguise);
@@ -264,8 +259,7 @@ public abstract class Disguise
                             task = null;
                         }
                     }
-                }
-                else
+                } else
                 {
                     deadTicks = 0;
 
@@ -352,8 +346,7 @@ public abstract class Disguise
                                     {
                                         ProtocolLibrary.getProtocolManager().sendServerPacket((Player) getEntity(),
                                                 selfLookPacket, false);
-                                    }
-                                    catch (InvocationTargetException e)
+                                    } catch (InvocationTargetException e)
                                     {
                                         e.printStackTrace();
                                     }
@@ -379,8 +372,7 @@ public abstract class Disguise
                                         }
 
                                         mods.write(0, DisguiseAPI.getSelfDisguiseId());
-                                    }
-                                    else
+                                    } else
                                     {
                                         mods.write(0, getEntity().getEntityId());
                                     }
@@ -395,8 +387,7 @@ public abstract class Disguise
                                     ProtocolLibrary.getProtocolManager().sendServerPacket(player, velocityPacket.shallowClone(),
                                             false);
                                 }
-                            }
-                            catch (Exception e)
+                            } catch (Exception e)
                             {
                                 e.printStackTrace();
                             }
@@ -416,8 +407,7 @@ public abstract class Disguise
                                 if (getEntity() != player)
                                 {
                                     ProtocolLibrary.getProtocolManager().sendServerPacket(player, packet, false);
-                                }
-                                else if (isSelfDisguiseVisible())
+                                } else if (isSelfDisguiseVisible())
                                 {
                                     PacketContainer selfPacket = packet.shallowClone();
 
@@ -427,15 +417,13 @@ public abstract class Disguise
                                     {
                                         ProtocolLibrary.getProtocolManager().sendServerPacket((Player) getEntity(), selfPacket,
                                                 false);
-                                    }
-                                    catch (InvocationTargetException e)
+                                    } catch (InvocationTargetException e)
                                     {
                                         e.printStackTrace();
                                     }
                                 }
                             }
-                        }
-                        catch (InvocationTargetException e)
+                        } catch (InvocationTargetException e)
                         {
                             e.printStackTrace();
                         }
@@ -476,8 +464,9 @@ public abstract class Disguise
     }
 
     /**
-     * In use doesn't mean that this disguise is active. It means that Lib's Disguises still stores a reference to the disguise.
-     * getEntity() can still return null if this disguise is active after despawn, logout, etc.
+     * In use doesn't mean that this disguise is active. It means that Lib's
+     * Disguises still stores a reference to the disguise. getEntity() can still
+     * return null if this disguise is active after despawn, logout, etc.
      *
      * @return isDisguiseInUse
      */
@@ -577,7 +566,8 @@ public abstract class Disguise
     }
 
     /**
-     * Removes the disguise and undisguises the entity if its using this disguise.
+     * Removes the disguise and undisguises the entity if its using this
+     * disguise.
      *
      * @return removeDiguise
      */
@@ -617,14 +607,12 @@ public abstract class Disguise
                         if (getEntity().isValid())
                         {
                             DisguiseUtilities.refreshTrackers((TargetedDisguise) this);
-                        }
-                        else
+                        } else
                         {
                             DisguiseUtilities.destroyEntity((TargetedDisguise) this);
                         }
                     }
-                }
-                else
+                } else
                 {
                     // Loop through the disguises because it could be used with a unknown entity id.
                     HashMap<Integer, HashSet<TargetedDisguise>> future = DisguiseUtilities.getFutureDisguises();
@@ -788,8 +776,8 @@ public abstract class Disguise
     }
 
     /**
-     * Sets up the FlagWatcher with the entityclass, it creates all the data it needs to prevent conflicts when sending the
-     * datawatcher.
+     * Sets up the FlagWatcher with the entityclass, it creates all the data it
+     * needs to prevent conflicts when sending the datawatcher.
      */
     private void setupWatcher()
     {
@@ -799,14 +787,18 @@ public abstract class Disguise
         for (FlagType flag : entityFlags)
         {
             if (disguiseFlags.contains(flag))
+            {
                 continue;
+            }
 
             FlagType backup = null;
 
             for (FlagType flagType : disguiseFlags)
             {
                 if (flagType.getIndex() == flag.getIndex())
+                {
                     backup = flagType;
+                }
             }
 
             getWatcher().setBackupValue(flag, backup == null ? null : backup.getDefault());
@@ -841,8 +833,7 @@ public abstract class Disguise
                     if (isSelfDisguiseVisible())
                     {
                         DisguiseUtilities.setupFakeDisguise(this);
-                    }
-                    else
+                    } else
                     {
                         DisguiseUtilities.removeSelfDisguise((Player) getEntity());
                     }

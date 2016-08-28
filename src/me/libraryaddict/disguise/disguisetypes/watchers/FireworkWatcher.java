@@ -11,6 +11,7 @@ import me.libraryaddict.disguise.disguisetypes.FlagWatcher;
 
 public class FireworkWatcher extends FlagWatcher
 {
+
     public FireworkWatcher(Disguise disguise)
     {
         super(disguise);
@@ -36,7 +37,7 @@ public class FireworkWatcher extends FlagWatcher
         newItem = newItem.clone();
         newItem.setAmount(1);
 
-        setValue(FlagType.FIREWORK_ITEM, Optional.<ItemStack> of(newItem));
+        setValue(FlagType.FIREWORK_ITEM, Optional.<ItemStack>of(newItem));
         sendData(FlagType.FIREWORK_ITEM);
     }
 

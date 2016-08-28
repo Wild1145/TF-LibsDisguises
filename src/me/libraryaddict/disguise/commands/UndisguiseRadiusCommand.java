@@ -25,8 +25,7 @@ public class UndisguiseRadiusCommand implements CommandExecutor
         {
             Integer.parseInt(string);
             return true;
-        }
-        catch (Exception ex)
+        } catch (Exception ex)
         {
             return false;
         }
@@ -66,7 +65,7 @@ public class UndisguiseRadiusCommand implements CommandExecutor
                 {
                     continue;
                 }
-                if(entity instanceof Player) 
+                if (entity instanceof Player)
                 {
                     continue;
                 }
@@ -77,8 +76,7 @@ public class UndisguiseRadiusCommand implements CommandExecutor
                 }
             }
             sender.sendMessage(ChatColor.RED + "Successfully undisguised " + disguisedEntitys + " entities!");
-        }
-        else
+        } else
         {
             sender.sendMessage(ChatColor.RED + "You are forbidden to use this command.");
         }

@@ -6,6 +6,7 @@ import me.libraryaddict.disguise.disguisetypes.FlagWatcher;
 
 public class ArrowWatcher extends FlagWatcher
 {
+
     public ArrowWatcher(Disguise disguise)
     {
         super(disguise);

@@ -5,6 +5,7 @@ import me.libraryaddict.disguise.disguisetypes.FlagType;
 
 public class AgeableWatcher extends InsentientWatcher
 {
+
     public AgeableWatcher(Disguise disguise)
     {
         super(disguise);

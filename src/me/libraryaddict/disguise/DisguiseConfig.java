@@ -81,7 +81,7 @@ public class DisguiseConfig
         setSoundsEnabled(config.getBoolean("DisguiseSounds"));
         setVelocitySent(config.getBoolean("SendVelocity"));
         setViewDisguises(config.getBoolean("ViewSelfDisguises")); // Since we can now toggle, the view disguises listener must
-                                                                  // always be on
+        // always be on
         PacketsManager.setViewDisguisesListener(true);
         setHearSelfDisguise(config.getBoolean("HearSelfDisguise"));
         setHideArmorFromSelf(config.getBoolean("RemoveArmor"));
@@ -152,7 +152,8 @@ public class DisguiseConfig
     }
 
     /**
-     * Is the plugin modifying the inventory packets so that players when self disguised, do not see their armor floating around
+     * Is the plugin modifying the inventory packets so that players when self
+     * disguised, do not see their armor floating around
      */
     public static boolean isHidingArmorFromSelf()
     {
@@ -160,7 +161,8 @@ public class DisguiseConfig
     }
 
     /**
-     * Does the plugin appear to remove the item they are holding, to prevent a floating sword when they are viewing self disguise
+     * Does the plugin appear to remove the item they are holding, to prevent a
+     * floating sword when they are viewing self disguise
      */
     public static boolean isHidingHeldItemFromSelf()
     {
@@ -375,7 +377,8 @@ public class DisguiseConfig
     }
 
     /**
-     * Does the plugin appear to remove the item they are holding, to prevent a floating sword when they are viewing self disguise
+     * Does the plugin appear to remove the item they are holding, to prevent a
+     * floating sword when they are viewing self disguise
      */
     public static void setHideHeldItemFromSelf(boolean hideHelditem)
     {
@@ -496,7 +499,8 @@ public class DisguiseConfig
     }
 
     /**
-     * Disable velocity packets being sent for w/e reason. Maybe you want every ounce of performance you can get?
+     * Disable velocity packets being sent for w/e reason. Maybe you want every
+     * ounce of performance you can get?
      *
      * @param sendVelocityPackets
      */

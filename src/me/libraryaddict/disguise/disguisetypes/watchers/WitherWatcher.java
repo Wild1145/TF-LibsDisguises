@@ -17,7 +17,7 @@ public class WitherWatcher extends InsentientWatcher
 
     /**
      * Returns the amount of time this Wither is invulnerable for
-     * 
+     *
      * @return
      */
     public int getInvulnerability()
@@ -28,9 +28,9 @@ public class WitherWatcher extends InsentientWatcher
     public int[] getTargets()
     {
         return new int[]
-            {
-                    getValue(FlagType.WITHER_TARGET_1), getValue(FlagType.WITHER_TARGET_2), getValue(FlagType.WITHER_TARGET_3)
-            };
+        {
+            getValue(FlagType.WITHER_TARGET_1), getValue(FlagType.WITHER_TARGET_2), getValue(FlagType.WITHER_TARGET_3)
+        };
     }
 
     /**

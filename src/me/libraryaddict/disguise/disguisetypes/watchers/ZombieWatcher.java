@@ -30,7 +30,7 @@ public class ZombieWatcher extends InsentientWatcher
 
     /**
      * Is this zombie a villager?
-     * 
+     *
      * @return
      */
     public boolean isVillager()
@@ -45,7 +45,7 @@ public class ZombieWatcher extends InsentientWatcher
 
     /**
      * Only returns a valid value if this zombie is a villager.
-     * 
+     *
      * @return
      */
     public Profession getProfession()
@@ -76,8 +76,9 @@ public class ZombieWatcher extends InsentientWatcher
     }
 
     /**
-     * Sets the profession of this zombie, in turn turning it into a Zombie Villager
-     * 
+     * Sets the profession of this zombie, in turn turning it into a Zombie
+     * Villager
+     *
      * @param id
      */
     public void setProfession(int id)
@@ -87,8 +88,9 @@ public class ZombieWatcher extends InsentientWatcher
     }
 
     /**
-     * Sets the profession of this zombie, in turn turning it into a Zombie Villager
-     * 
+     * Sets the profession of this zombie, in turn turning it into a Zombie
+     * Villager
+     *
      * @param profession
      */
     public void setProfession(Profession profession)

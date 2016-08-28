@@ -12,6 +12,7 @@ import me.libraryaddict.disguise.disguisetypes.FlagWatcher;
  */
 public class EnderCrystalWatcher extends FlagWatcher
 {
+
     public EnderCrystalWatcher(Disguise disguise)
     {
         super(disguise);

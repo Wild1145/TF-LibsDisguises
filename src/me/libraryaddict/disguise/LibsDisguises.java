@@ -54,6 +54,7 @@ import me.libraryaddict.disguise.utilities.ReflectionManager;
 
 public class LibsDisguises extends JavaPlugin
 {
+
     private static LibsDisguises instance;
     private DisguiseListener listener;
 
@@ -63,8 +64,7 @@ public class LibsDisguises extends JavaPlugin
         try
         {
             Class.forName("com.comphenix.protocol.wrappers.Vector3F").getName();
-        }
-        catch (Exception ex)
+        } catch (Exception ex)
         {
             System.err.println("[LibsDisguises] Lib's Disguises failed to startup, outdated ProtocolLib!");
             System.err.println(
@@ -75,8 +75,7 @@ public class LibsDisguises extends JavaPlugin
         try
         {
             ReflectionManager.getNmsClass("EntityShulker").getName();
-        }
-        catch (Exception ex)
+        } catch (Exception ex)
         {
             System.err.println("[LibsDisguises] Lib's Disguises failed to startup, outdated server!");
             System.err.println("[LibsDisguises] This plugin does not offer backwards support!");
@@ -107,7 +106,6 @@ public class LibsDisguises extends JavaPlugin
         getCommand("disguiseclone").setExecutor(new CloneDisguiseCommand());
         getCommand("libsdisguises").setExecutor(new LibsDisguisesCommand());
         getCommand("disguiseviewself").setExecutor(new DisguiseViewSelf());
-        
 
         registerValues();
 
@@ -117,8 +115,7 @@ public class LibsDisguises extends JavaPlugin
         {
             Metrics metrics = new Metrics(this);
             metrics.start();
-        }
-        catch (IOException e)
+        } catch (IOException e)
         {
         }
     }
@@ -135,8 +132,9 @@ public class LibsDisguises extends JavaPlugin
     }
 
     /**
-     * Here we create a nms entity for each disguise. Then grab their default values in their datawatcher. Then their sound volume
-     * for mob noises. As well as setting their watcher class and entity size.
+     * Here we create a nms entity for each disguise. Then grab their default
+     * values in their datawatcher. Then their sound volume for mob noises. As
+     * well as setting their watcher class and entity size.
      */
     private void registerValues()
     {
@@ -153,52 +151,51 @@ public class LibsDisguises extends JavaPlugin
             {
                 switch (disguiseType)
                 {
-                case SPECTRAL_ARROW:
-                    watcherClass = ArrowWatcher.class;
-                    break;
-                case PRIMED_TNT:
-                    watcherClass = TNTWatcher.class;
-                    break;
-                case MINECART_CHEST:
-                case MINECART_COMMAND:
-                case MINECART_FURNACE:
-                case MINECART_HOPPER:
-                case MINECART_MOB_SPAWNER:
-                case MINECART_TNT:
-                    watcherClass = MinecartWatcher.class;
-                    break;
-                case SPIDER:
-                case CAVE_SPIDER:
-                    watcherClass = SpiderWatcher.class;
-                    break;
-                case DONKEY:
-                case MULE:
-                case UNDEAD_HORSE:
-                case SKELETON_HORSE:
-                    watcherClass = HorseWatcher.class;
-                    break;
-                case ZOMBIE_VILLAGER:
-                case PIG_ZOMBIE:
-                case HUSK:
-                    watcherClass = ZombieWatcher.class;
-                    break;
-                case MAGMA_CUBE:
-                    watcherClass = SlimeWatcher.class;
-                    break;
-                case ELDER_GUARDIAN:
-                    watcherClass = GuardianWatcher.class;
-                    break;
-                case WITHER_SKELETON:
-                case STRAY:
-                    watcherClass = SkeletonWatcher.class;
-                    break;
-                default:
-                    watcherClass = Class.forName(
-                            "me.libraryaddict.disguise.disguisetypes.watchers." + toReadable(disguiseType.name()) + "Watcher");
-                    break;
+                    case SPECTRAL_ARROW:
+                        watcherClass = ArrowWatcher.class;
+                        break;
+                    case PRIMED_TNT:
+                        watcherClass = TNTWatcher.class;
+                        break;
+                    case MINECART_CHEST:
+                    case MINECART_COMMAND:
+                    case MINECART_FURNACE:
+                    case MINECART_HOPPER:
+                    case MINECART_MOB_SPAWNER:
+                    case MINECART_TNT:
+                        watcherClass = MinecartWatcher.class;
+                        break;
+                    case SPIDER:
+                    case CAVE_SPIDER:
+                        watcherClass = SpiderWatcher.class;
+                        break;
+                    case DONKEY:
+                    case MULE:
+                    case UNDEAD_HORSE:
+                    case SKELETON_HORSE:
+                        watcherClass = HorseWatcher.class;
+                        break;
+                    case ZOMBIE_VILLAGER:
+                    case PIG_ZOMBIE:
+                    case HUSK:
+                        watcherClass = ZombieWatcher.class;
+                        break;
+                    case MAGMA_CUBE:
+                        watcherClass = SlimeWatcher.class;
+                        break;
+                    case ELDER_GUARDIAN:
+                        watcherClass = GuardianWatcher.class;
+                        break;
+                    case WITHER_SKELETON:
+                    case STRAY:
+                        watcherClass = SkeletonWatcher.class;
+                        break;
+                    default:
+                        watcherClass = Class.forName(
+                                "me.libraryaddict.disguise.disguisetypes.watchers." + toReadable(disguiseType.name()) + "Watcher");
+                        break;
                 }
-            }
-            catch (ClassNotFoundException ex)
+            } catch (ClassNotFoundException ex)
             {
                 // There is no explicit watcher for this entity.
                 Class entityClass = disguiseType.getEntityType().getEntityClass();
@@ -208,25 +205,20 @@ public class LibsDisguises extends JavaPlugin
                     if (Tameable.class.isAssignableFrom(entityClass))
                     {
                         watcherClass = TameableWatcher.class;
-                    }
-                    else if (Ageable.class.isAssignableFrom(entityClass))
+                    } else if (Ageable.class.isAssignableFrom(entityClass))
                     {
                         watcherClass = AgeableWatcher.class;
-                    }
-                    else if (Creature.class.isAssignableFrom(entityClass))
+                    } else if (Creature.class.isAssignableFrom(entityClass))
                     {
                         watcherClass = InsentientWatcher.class;
-                    }
-                    else if (LivingEntity.class.isAssignableFrom(entityClass))
+                    } else if (LivingEntity.class.isAssignableFrom(entityClass))
                     {
                         watcherClass = LivingWatcher.class;
-                    }
-                    else
+                    } else
                     {
                         watcherClass = FlagWatcher.class;
                     }
-                }
-                else
+                } else
                 {
                     watcherClass = FlagWatcher.class; // Disguise is unknown type
                 }
@@ -249,50 +241,50 @@ public class LibsDisguises extends JavaPlugin
 
             switch (disguiseType)
             {
-            case WITHER_SKELETON:
-            case ZOMBIE_VILLAGER:
-            case DONKEY:
-            case MULE:
-            case UNDEAD_HORSE:
-            case SKELETON_HORSE:
-            case STRAY:
-            case HUSK:
-                continue;
-            case PRIMED_TNT:
-                nmsEntityName = "TNTPrimed";
-                break;
-            case MINECART_TNT:
-                nmsEntityName = "MinecartTNT";
-                break;
-            case MINECART:
-                nmsEntityName = "MinecartRideable";
-                break;
-            case FIREWORK:
-                nmsEntityName = "Fireworks";
-                break;
-            case SPLASH_POTION:
-                nmsEntityName = "Potion";
-                break;
-            case GIANT:
-                nmsEntityName = "GiantZombie";
-                break;
-            case DROPPED_ITEM:
-                nmsEntityName = "Item";
-                break;
-            case FIREBALL:
-                nmsEntityName = "LargeFireball";
-                break;
-            case LEASH_HITCH:
-                nmsEntityName = "Leash";
-                break;
-            case ELDER_GUARDIAN:
-                nmsEntityName = "Guardian";
-                break;
-            case ARROW:
-            case SPECTRAL_ARROW:
-                nmsEntityName = "TippedArrow";
-            default:
-                break;
+                case WITHER_SKELETON:
+                case ZOMBIE_VILLAGER:
+                case DONKEY:
+                case MULE:
+                case UNDEAD_HORSE:
+                case SKELETON_HORSE:
+                case STRAY:
+                case HUSK:
+                    continue;
+                case PRIMED_TNT:
+                    nmsEntityName = "TNTPrimed";
+                    break;
+                case MINECART_TNT:
+                    nmsEntityName = "MinecartTNT";
+                    break;
+                case MINECART:
+                    nmsEntityName = "MinecartRideable";
+                    break;
+                case FIREWORK:
+                    nmsEntityName = "Fireworks";
+                    break;
+                case SPLASH_POTION:
+                    nmsEntityName = "Potion";
+                    break;
+                case GIANT:
+                    nmsEntityName = "GiantZombie";
+                    break;
+                case DROPPED_ITEM:
+                    nmsEntityName = "Item";
+                    break;
+                case FIREBALL:
+                    nmsEntityName = "LargeFireball";
+                    break;
+                case LEASH_HITCH:
+                    nmsEntityName = "Leash";
+                    break;
+                case ELDER_GUARDIAN:
+                    nmsEntityName = "Guardian";
+                    break;
+                case ARROW:
+                case SPECTRAL_ARROW:
+                    nmsEntityName = "TippedArrow";
+                default:
+                    break;
             }
 
             try
@@ -377,8 +369,7 @@ public class LibsDisguises extends JavaPlugin
                     ((Ageable) bukkitEntity).setBaby();
 
                     disguiseValues.setBabyBox(ReflectionManager.getBoundingBox(bukkitEntity));
-                }
-                else if (bukkitEntity instanceof Zombie)
+                } else if (bukkitEntity instanceof Zombie)
                 {
                     ((Zombie) bukkitEntity).setBaby(true);
 
@@ -386,8 +377,7 @@ public class LibsDisguises extends JavaPlugin
                 }
 
                 disguiseValues.setEntitySize(ReflectionManager.getSize(bukkitEntity));
-            }
-            catch (SecurityException | IllegalArgumentException | IllegalAccessException | FieldAccessException ex)
+            } catch (SecurityException | IllegalArgumentException | IllegalAccessException | FieldAccessException ex)
             {
                 System.out.print(
                         "[LibsDisguises] Uh oh! Trouble while making values for the disguise " + disguiseType.name() + "!");
@@ -419,7 +409,8 @@ public class LibsDisguises extends JavaPlugin
     }
 
     /**
-     * External APIs shouldn't actually need this instance. DisguiseAPI should be enough to handle most cases.
+     * External APIs shouldn't actually need this instance. DisguiseAPI should
+     * be enough to handle most cases.
      *
      * @return The instance of this plugin
      */

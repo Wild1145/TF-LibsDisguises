@@ -7,11 +7,13 @@ import org.bukkit.event.HandlerList;
 
 import me.libraryaddict.disguise.disguisetypes.Disguise;
 
-public class DisguiseEvent extends Event implements Cancellable {
+public class DisguiseEvent extends Event implements Cancellable
+{
 
     private static final HandlerList handlers = new HandlerList();
 
-    public static HandlerList getHandlerList() {
+    public static HandlerList getHandlerList()
+    {
         return handlers;
     }
 
@@ -19,31 +21,37 @@ public class DisguiseEvent extends Event implements Cancellable {
     private Entity disguised;
     private boolean isCancelled;
 
-    public DisguiseEvent(Entity entity, Disguise disguise) {
+    public DisguiseEvent(Entity entity, Disguise disguise)
+    {
         this.disguised = entity;
         this.disguise = disguise;
     }
 
-    public Disguise getDisguise() {
+    public Disguise getDisguise()
+    {
         return disguise;
     }
 
-    public Entity getEntity() {
+    public Entity getEntity()
+    {
         return disguised;
     }
 
     @Override
-    public HandlerList getHandlers() {
+    public HandlerList getHandlers()
+    {
         return handlers;
     }
 
     @Override
-    public boolean isCancelled() {
+    public boolean isCancelled()
+    {
         return isCancelled;
     }
 
     @Override
-    public void setCancelled(boolean cancelled) {
+    public void setCancelled(boolean cancelled)
+    {
         isCancelled = cancelled;
     }
 }

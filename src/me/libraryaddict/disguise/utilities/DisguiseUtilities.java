@@ -59,20 +59,22 @@ import me.libraryaddict.disguise.disguisetypes.watchers.ZombieWatcher;
 
 public class DisguiseUtilities
 {
+
     public static final Random random = new Random();
     /**
-     * This is a list of names which was called by other plugins. As such, don't remove from the gameProfiles as its the duty of
-     * the plugin to do that.
+     * This is a list of names which was called by other plugins. As such, don't
+     * remove from the gameProfiles as its the duty of the plugin to do that.
      */
     private static HashSet<String> addedByPlugins = new HashSet<>();
     private static LinkedHashMap<String, Disguise> clonedDisguises = new LinkedHashMap<>();
     /**
-     * A hashmap of the uuid's of entitys, alive and dead. And their disguises in use
+     * A hashmap of the uuid's of entitys, alive and dead. And their disguises
+     * in use
      */
     private static HashMap<UUID, HashSet<TargetedDisguise>> disguisesInUse = new HashMap<>();
     /**
-     * Disguises which are stored ready for a entity to be seen by a player Preferably, disguises in this should only stay in for
-     * a max of a second.
+     * Disguises which are stored ready for a entity to be seen by a player
+     * Preferably, disguises in this should only stay in for a max of a second.
      */
     private static HashMap<Integer, HashSet<TargetedDisguise>> futureDisguises = new HashMap<>();
     /**
@@ -111,9 +113,9 @@ public class DisguiseUtilities
             Method setEmitted = chunkSection.getClass().getMethod("b", int.class, int.class, int.class, int.class);
 
             for (BlockFace face : new BlockFace[]
-                {
-                        BlockFace.EAST, BlockFace.WEST, BlockFace.NORTH, BlockFace.SOUTH
-                })
+            {
+                BlockFace.EAST, BlockFace.WEST, BlockFace.NORTH, BlockFace.SOUTH
+            })
             {
                 int x = 1 + face.getModX();
 
@@ -139,8 +141,7 @@ public class DisguiseUtilities
             threadField.setAccessible(true);
 
             mainThread = (Thread) threadField.get(ReflectionManager.getMinecraftServer());
-        }
-        catch (Exception ex)
+        } catch (Exception ex)
         {
             ex.printStackTrace();
         }
@@ -153,8 +154,7 @@ public class DisguiseUtilities
             if (clonedDisguises.containsKey(key))
             {
                 clonedDisguises.remove(key);
-            }
-            else if (DisguiseConfig.getMaxClonedDisguises() == clonedDisguises.size())
+            } else if (DisguiseConfig.getMaxClonedDisguises() == clonedDisguises.size())
             {
                 clonedDisguises.remove(clonedDisguises.keySet().iterator().next());
             }
@@ -240,8 +240,9 @@ public class DisguiseUtilities
     }
 
     /**
-     * If name isn't null. Make sure that the name doesn't see any other disguise. Else if name is null. Make sure that the
-     * observers in the disguise don't see any other disguise.
+     * If name isn't null. Make sure that the name doesn't see any other
+     * disguise. Else if name is null. Make sure that the observers in the
+     * disguise don't see any other disguise.
      */
     public static void checkConflicts(TargetedDisguise disguise, String name)
     {
@@ -267,16 +268,14 @@ public class DisguiseUtilities
                             if (name != null)
                             {
                                 d.removePlayer(name);
-                            }
-                            else
+                            } else
                             {
                                 for (String playername : disguise.getObservers())
                                 {
                                     d.silentlyRemovePlayer(playername);
                                 }
                             }
-                        }
-                        else if (disguise.getDisguiseTarget() == TargetType.SHOW_TO_EVERYONE_BUT_THESE_PLAYERS)
+                        } else if (disguise.getDisguiseTarget() == TargetType.SHOW_TO_EVERYONE_BUT_THESE_PLAYERS)
                         {
                             // If player is not a observer in the loop
                             if (name != null)
@@ -285,8 +284,7 @@ public class DisguiseUtilities
                                 {
                                     d.removePlayer(name);
                                 }
-                            }
-                            else
+                            } else
                             {
                                 for (String playername : new ArrayList<>(d.getObservers()))
                                 {
@@ -297,8 +295,7 @@ public class DisguiseUtilities
                                 }
                             }
                         }
-                    }
-                    else if (d.getDisguiseTarget() == TargetType.SHOW_TO_EVERYONE_BUT_THESE_PLAYERS)
+                    } else if (d.getDisguiseTarget() == TargetType.SHOW_TO_EVERYONE_BUT_THESE_PLAYERS)
                     {
                         // Here you add it to the loop if they see the disguise
                         if (disguise.getDisguiseTarget() == TargetType.HIDE_DISGUISE_TO_EVERYONE_BUT_THESE_PLAYERS)
@@ -307,16 +304,14 @@ public class DisguiseUtilities
                             if (name != null)
                             {
                                 d.addPlayer(name);
-                            }
-                            else
+                            } else
                             {
                                 for (String playername : disguise.getObservers())
                                 {
                                     d.silentlyAddPlayer(playername);
                                 }
                             }
-                        }
-                        else if (disguise.getDisguiseTarget() == TargetType.SHOW_TO_EVERYONE_BUT_THESE_PLAYERS)
+                        } else if (disguise.getDisguiseTarget() == TargetType.SHOW_TO_EVERYONE_BUT_THESE_PLAYERS)
                         {
                             // This here is a paradox.
                             // If fed a name. I can do this.
@@ -340,28 +335,32 @@ public class DisguiseUtilities
     public static void destroyEntity(TargetedDisguise disguise)
     {
         if (mainThread != Thread.currentThread())
+        {
             throw new IllegalStateException("Cannot modify disguises on an async thread");
+        }
 
         try
         {
             Object entityTrackerEntry = ReflectionManager.getEntityTrackerEntry(disguise.getEntity());
 
             if (entityTrackerEntry == null)
+            {
                 return;
+            }
 
             Set trackedPlayers = (Set) ReflectionManager.getNmsField("EntityTrackerEntry", "trackedPlayers")
                     .get(entityTrackerEntry);
 
             // If the tracker exists. Remove himself from his tracker
             trackedPlayers = (Set) new HashSet(trackedPlayers).clone(); // Copy before iterating to prevent
-                                                                        // ConcurrentModificationException
+            // ConcurrentModificationException
 
             PacketContainer destroyPacket = new PacketContainer(Server.ENTITY_DESTROY);
 
             destroyPacket.getIntegerArrays().write(0, new int[]
-                {
-                        disguise.getEntity().getEntityId()
-                });
+            {
+                disguise.getEntity().getEntityId()
+            });
 
             for (Object p : trackedPlayers)
             {
@@ -372,8 +371,7 @@ public class DisguiseUtilities
                     ProtocolLibrary.getProtocolManager().sendServerPacket(player, destroyPacket);
                 }
             }
-        }
-        catch (Exception ex)
+        } catch (Exception ex)
         {
             ex.printStackTrace();
         }
@@ -394,15 +392,14 @@ public class DisguiseUtilities
                 {
                     if ((disguise.getWatcher() instanceof AgeableWatcher && ((AgeableWatcher) disguise.getWatcher()).isBaby())
                             || (disguise.getWatcher() instanceof ZombieWatcher
-                                    && ((ZombieWatcher) disguise.getWatcher()).isBaby()))
+                            && ((ZombieWatcher) disguise.getWatcher()).isBaby()))
                     {
                         disguiseBox = disguiseValues.getBabyBox();
                     }
                 }
 
                 ReflectionManager.setBoundingBox(entity, disguiseBox);
-            }
-            else
+            } else
             {
                 DisguiseValues entityValues = DisguiseValues.getDisguiseValues(DisguiseType.getType(entity.getType()));
 
@@ -493,9 +490,9 @@ public class DisguiseUtilities
         doubles.write(2, sleepingLocation.getZ());
 
         return new PacketContainer[]
-            {
-                    setBed, teleport
-            };
+        {
+            setBed, teleport
+        };
     }
 
     public static Disguise getClonedDisguise(String key)
@@ -596,7 +593,8 @@ public class DisguiseUtilities
     }
 
     /**
-     * Get all EntityPlayers who have this entity in their Entity Tracker And they are in the targeted disguise.
+     * Get all EntityPlayers who have this entity in their Entity Tracker And
+     * they are in the targeted disguise.
      *
      * @param disguise
      * @return
@@ -604,10 +602,14 @@ public class DisguiseUtilities
     public static List<Player> getPerverts(Disguise disguise)
     {
         if (mainThread != Thread.currentThread())
+        {
             throw new IllegalStateException("Cannot modify disguises on an async thread");
+        }
 
         if (disguise.getEntity() == null)
+        {
             throw new IllegalStateException("The entity for the disguisetype " + disguise.getType().name() + " is null!");
+        }
 
         List<Player> players = new ArrayList<>();
 
@@ -620,7 +622,7 @@ public class DisguiseUtilities
                 Set trackedPlayers = (Set) ReflectionManager.getNmsField("EntityTrackerEntry", "trackedPlayers")
                         .get(entityTrackerEntry);
                 trackedPlayers = (Set) new HashSet(trackedPlayers).clone(); // Copy before iterating to prevent
-                                                                            // ConcurrentModificationException
+                // ConcurrentModificationException
                 for (Object p : trackedPlayers)
                 {
                     Player player = (Player) ReflectionManager.getBukkitEntity(p);
@@ -631,8 +633,7 @@ public class DisguiseUtilities
                     }
                 }
             }
-        }
-        catch (Exception ex)
+        } catch (Exception ex)
         {
             ex.printStackTrace();
         }
@@ -659,7 +660,7 @@ public class DisguiseUtilities
 
                 if (DisguiseAPI.isDisguiseInUse(disguise)
                         && (!gameProfile.getName().equals(disguise.getSkin() != null ? disguise.getSkin() : disguise.getName())
-                                || !gameProfile.getProperties().isEmpty()))
+                        || !gameProfile.getProperties().isEmpty()))
                 {
                     disguise.setGameProfile(gameProfile);
 
@@ -670,7 +671,8 @@ public class DisguiseUtilities
     }
 
     /**
-     * Pass in a set, check if it's a hashset. If it's not, return false. If you pass in something else, you failed.
+     * Pass in a set, check if it's a hashset. If it's not, return false. If you
+     * pass in something else, you failed.
      *
      * @param obj
      * @return
@@ -678,17 +680,20 @@ public class DisguiseUtilities
     private static boolean isHashSet(Object obj)
     {
         if (obj instanceof HashSet)
+        {
             return true; // It's Spigot/Bukkit
-
+        }
         if (obj instanceof Set)
+        {
             return false; // It's PaperSpigot/SportsBukkit
-
+        }
         throw new IllegalArgumentException("Object passed was not either a hashset or set!");
     }
 
     /**
-     * Thread safe to use. This returns a GameProfile. And if its GameProfile doesn't have a skin blob. Then it does a lookup
-     * using schedulers. The runnable is run once the GameProfile has been successfully dealt with
+     * Thread safe to use. This returns a GameProfile. And if its GameProfile
+     * doesn't have a skin blob. Then it does a lookup using schedulers. The
+     * runnable is run once the GameProfile has been successfully dealt with
      */
     public static WrappedGameProfile getProfileFromMojang(String playerName, LibsProfileLookup runnableIfCantReturn)
     {
@@ -696,8 +701,9 @@ public class DisguiseUtilities
     }
 
     /**
-     * Thread safe to use. This returns a GameProfile. And if its GameProfile doesn't have a skin blob. Then it does a lookup
-     * using schedulers. The runnable is run once the GameProfile has been successfully dealt with
+     * Thread safe to use. This returns a GameProfile. And if its GameProfile
+     * doesn't have a skin blob. Then it does a lookup using schedulers. The
+     * runnable is run once the GameProfile has been successfully dealt with
      */
     public static WrappedGameProfile getProfileFromMojang(String playerName, LibsProfileLookup runnableIfCantReturn,
             boolean contactMojang)
@@ -715,8 +721,7 @@ public class DisguiseUtilities
             {
                 return gameProfiles.get(playerName);
             }
-        }
-        else if (Pattern.matches("([A-Za-z0-9_]){1,16}", origName))
+        } else if (Pattern.matches("([A-Za-z0-9_]){1,16}", origName))
         {
             getAddedByPlugins().add(playerName);
 
@@ -770,8 +775,7 @@ public class DisguiseUtilities
                                             if (obj instanceof Runnable)
                                             {
                                                 ((Runnable) obj).run();
-                                            }
-                                            else if (obj instanceof LibsProfileLookup)
+                                            } else if (obj instanceof LibsProfileLookup)
                                             {
                                                 ((LibsProfileLookup) obj).onLookup(gameProfile);
                                             }
@@ -779,8 +783,7 @@ public class DisguiseUtilities
                                     }
                                 }
                             });
-                        }
-                        catch (Exception e)
+                        } catch (Exception e)
                         {
                             if (gameProfiles.containsKey(playerName) && gameProfiles.get(playerName) == null)
                             {
@@ -794,8 +797,7 @@ public class DisguiseUtilities
                     }
                 });
             }
-        }
-        else
+        } else
         {
             return ReflectionManager.getGameProfile(null, origName);
         }
@@ -814,8 +816,9 @@ public class DisguiseUtilities
     }
 
     /**
-     * Thread safe to use. This returns a GameProfile. And if its GameProfile doesn't have a skin blob. Then it does a lookup
-     * using schedulers. The runnable is run once the GameProfile has been successfully dealt with
+     * Thread safe to use. This returns a GameProfile. And if its GameProfile
+     * doesn't have a skin blob. Then it does a lookup using schedulers. The
+     * runnable is run once the GameProfile has been successfully dealt with
      */
     public static WrappedGameProfile getProfileFromMojang(String playerName, Runnable runnableIfCantReturn)
     {
@@ -823,8 +826,9 @@ public class DisguiseUtilities
     }
 
     /**
-     * Thread safe to use. This returns a GameProfile. And if its GameProfile doesn't have a skin blob. Then it does a lookup
-     * using schedulers. The runnable is run once the GameProfile has been successfully dealt with
+     * Thread safe to use. This returns a GameProfile. And if its GameProfile
+     * doesn't have a skin blob. Then it does a lookup using schedulers. The
+     * runnable is run once the GameProfile has been successfully dealt with
      */
     public static WrappedGameProfile getProfileFromMojang(String playerName, Runnable runnableIfCantReturn, boolean contactMojang)
     {
@@ -866,10 +870,14 @@ public class DisguiseUtilities
     public static void refreshTracker(final TargetedDisguise disguise, String player)
     {
         if (mainThread != Thread.currentThread())
+        {
             throw new IllegalStateException("Cannot modify disguises on an async thread");
+        }
 
         if (disguise.getEntity() == null || !disguise.getEntity().isValid())
+        {
             return;
+        }
 
         try
         {
@@ -895,20 +903,20 @@ public class DisguiseUtilities
                         try
                         {
                             DisguiseUtilities.sendSelfDisguise((Player) disguise.getEntity(), disguise);
-                        }
-                        catch (Exception ex)
+                        } catch (Exception ex)
                         {
                             ex.printStackTrace();
                         }
                     }
                 }, 2);
-            }
-            else
+            } else
             {
                 final Object entityTrackerEntry = ReflectionManager.getEntityTrackerEntry(disguise.getEntity());
 
                 if (entityTrackerEntry == null)
+                {
                     return;
+                }
 
                 Set trackedPlayers = (Set) ReflectionManager.getNmsField("EntityTrackerEntry", "trackedPlayers")
                         .get(entityTrackerEntry);
@@ -920,13 +928,15 @@ public class DisguiseUtilities
                         ReflectionManager.getNmsClass("EntityPlayer"));
 
                 trackedPlayers = (Set) new HashSet(trackedPlayers).clone(); // Copy before iterating to prevent
-                                                                            // ConcurrentModificationException
+                // ConcurrentModificationException
                 for (final Object p : trackedPlayers)
                 {
                     Player pl = (Player) ReflectionManager.getBukkitEntity(p);
 
                     if (!player.equalsIgnoreCase((pl).getName()))
+                    {
                         continue;
+                    }
 
                     clear.invoke(entityTrackerEntry, p);
 
@@ -941,8 +951,7 @@ public class DisguiseUtilities
                             try
                             {
                                 updatePlayer.invoke(entityTrackerEntry, p);
-                            }
-                            catch (Exception ex)
+                            } catch (Exception ex)
                             {
                                 ex.printStackTrace();
                             }
@@ -951,10 +960,7 @@ public class DisguiseUtilities
                     break;
                 }
             }
-        }
-        catch (
-
-        Exception ex)
+        } catch (Exception ex)
 
         {
             ex.printStackTrace();
@@ -967,7 +973,9 @@ public class DisguiseUtilities
     public static void refreshTrackers(Entity entity)
     {
         if (mainThread != Thread.currentThread())
+        {
             throw new IllegalStateException("Cannot modify disguises on an async thread");
+        }
 
         if (entity.isValid())
         {
@@ -989,7 +997,7 @@ public class DisguiseUtilities
                             ReflectionManager.getNmsClass("EntityPlayer"));
 
                     trackedPlayers = (Set) new HashSet(trackedPlayers).clone(); // Copy before iterating to prevent
-                                                                                // ConcurrentModificationException
+                    // ConcurrentModificationException
                     for (final Object p : trackedPlayers)
                     {
                         Player player = (Player) ReflectionManager.getBukkitEntity(p);
@@ -1008,8 +1016,7 @@ public class DisguiseUtilities
                                     try
                                     {
                                         updatePlayer.invoke(entityTrackerEntry, p);
-                                    }
-                                    catch (Exception ex)
+                                    } catch (Exception ex)
                                     {
                                         ex.printStackTrace();
                                     }
@@ -1018,8 +1025,7 @@ public class DisguiseUtilities
                         }
                     }
                 }
-            }
-            catch (Exception ex)
+            } catch (Exception ex)
             {
                 ex.printStackTrace();
             }
@@ -1027,12 +1033,15 @@ public class DisguiseUtilities
     }
 
     /**
-     * Resends the entity to all the watching players, which is where the magic begins
+     * Resends the entity to all the watching players, which is where the magic
+     * begins
      */
     public static void refreshTrackers(final TargetedDisguise disguise)
     {
         if (mainThread != Thread.currentThread())
+        {
             throw new IllegalStateException("Cannot modify disguises on an async thread");
+        }
 
         if (disguise.getEntity().isValid())
         {
@@ -1055,8 +1064,7 @@ public class DisguiseUtilities
                             try
                             {
                                 DisguiseUtilities.sendSelfDisguise((Player) disguise.getEntity(), disguise);
-                            }
-                            catch (Exception ex)
+                            } catch (Exception ex)
                             {
                                 ex.printStackTrace();
                             }
@@ -1098,8 +1106,7 @@ public class DisguiseUtilities
                                     try
                                     {
                                         updatePlayer.invoke(entityTrackerEntry, p);
-                                    }
-                                    catch (Exception ex)
+                                    } catch (Exception ex)
                                     {
                                         ex.printStackTrace();
                                     }
@@ -1108,10 +1115,7 @@ public class DisguiseUtilities
                         }
                     }
                 }
-            }
-            catch (
-
-            Exception ex)
+            } catch (Exception ex)
             {
                 ex.printStackTrace();
 
@@ -1149,7 +1153,9 @@ public class DisguiseUtilities
     public static void removeSelfDisguise(Player player)
     {
         if (mainThread != Thread.currentThread())
+        {
             throw new IllegalStateException("Cannot modify disguises on an async thread");
+        }
 
         if (!selfDisguised.contains(player.getUniqueId()))
         {
@@ -1162,8 +1168,7 @@ public class DisguiseUtilities
         try
         {
             ProtocolLibrary.getProtocolManager().sendServerPacket(player, packet);
-        }
-        catch (Exception ex)
+        } catch (Exception ex)
         {
             ex.printStackTrace();
         }
@@ -1197,15 +1202,13 @@ public class DisguiseUtilities
                 {
                     ((Set<Object>) ReflectionManager.getNmsField("EntityTrackerEntry", "trackedPlayers").get(entityTrackerEntry))
                             .remove(ReflectionManager.getNmsEntity(player));
-                }
-                else
+                } else
                 {
                     ((Map<Object, Object>) ReflectionManager.getNmsField("EntityTrackerEntry", "trackedPlayerMap")
                             .get(entityTrackerEntry)).remove(ReflectionManager.getNmsEntity(player));
                 }
             }
-        }
-        catch (Exception ex)
+        } catch (Exception ex)
         {
             ex.printStackTrace();
         }
@@ -1215,11 +1218,10 @@ public class DisguiseUtilities
         {
             ProtocolLibrary.getProtocolManager().sendServerPacket(player,
                     ProtocolLibrary.getProtocolManager()
-                            .createPacketConstructor(Server.ENTITY_METADATA, player.getEntityId(),
-                                    WrappedDataWatcher.getEntityWatcher(player), true)
-                            .createPacket(player.getEntityId(), WrappedDataWatcher.getEntityWatcher(player), true));
-        }
-        catch (Exception ex)
+                    .createPacketConstructor(Server.ENTITY_METADATA, player.getEntityId(),
+                            WrappedDataWatcher.getEntityWatcher(player), true)
+                    .createPacket(player.getEntityId(), WrappedDataWatcher.getEntityWatcher(player), true));
+        } catch (Exception ex)
         {
             ex.printStackTrace();
         }
@@ -1233,7 +1235,9 @@ public class DisguiseUtilities
     public static void sendSelfDisguise(final Player player, final TargetedDisguise disguise)
     {
         if (mainThread != Thread.currentThread())
+        {
             throw new IllegalStateException("Cannot modify disguises on an async thread");
+        }
 
         try
         {
@@ -1288,8 +1292,7 @@ public class DisguiseUtilities
             {
                 ((Set<Object>) ReflectionManager.getNmsField("EntityTrackerEntry", "trackedPlayers").get(entityTrackerEntry))
                         .add(ReflectionManager.getNmsEntity(player));
-            }
-            else
+            } else
             {
                 ((Map<Object, Object>) ReflectionManager.getNmsField("EntityTrackerEntry", "trackedPlayerMap")
                         .get(entityTrackerEntry)).put(ReflectionManager.getNmsEntity(player), true);
@@ -1304,7 +1307,7 @@ public class DisguiseUtilities
 
             sendSelfPacket(player,
                     manager.createPacketConstructor(Server.ENTITY_METADATA, player.getEntityId(), dataWatcher, true)
-                            .createPacket(player.getEntityId(), dataWatcher, true));
+                    .createPacket(player.getEntityId(), dataWatcher, true));
 
             boolean isMoving = false;
 
@@ -1313,8 +1316,7 @@ public class DisguiseUtilities
                 Field field = ReflectionManager.getNmsClass("EntityTrackerEntry").getDeclaredField("isMoving");
                 field.setAccessible(true);
                 isMoving = field.getBoolean(entityTrackerEntry);
-            }
-            catch (Exception ex)
+            } catch (Exception ex)
             {
                 ex.printStackTrace();
             }
@@ -1334,8 +1336,7 @@ public class DisguiseUtilities
             {
                 sendSelfPacket(player, manager.createPacketConstructor(Server.ATTACH_ENTITY, 0, player, player.getVehicle())
                         .createPacket(0, player, player.getVehicle()));
-            }
-            else if (player.getPassenger() != null && player.getEntityId() > player.getPassenger().getEntityId())
+            } else if (player.getPassenger() != null && player.getEntityId() > player.getPassenger().getEntityId())
             {
                 sendSelfPacket(player, manager.createPacketConstructor(Server.ATTACH_ENTITY, 0, player.getPassenger(), player)
                         .createPacket(0, player.getPassenger(), player));
@@ -1345,38 +1346,38 @@ public class DisguiseUtilities
                     manager.createPacketConstructor(Server.ENTITY_EQUIPMENT, 0,
                             ReflectionManager.createEnumItemSlot(EquipmentSlot.HEAD),
                             ReflectionManager.getNmsItem(new ItemStack(Material.STONE))).createPacket(player.getEntityId(),
-                                    ReflectionManager.createEnumItemSlot(EquipmentSlot.HEAD),
-                                    ReflectionManager.getNmsItem(player.getInventory().getHelmet())));
+                    ReflectionManager.createEnumItemSlot(EquipmentSlot.HEAD),
+                    ReflectionManager.getNmsItem(player.getInventory().getHelmet())));
             sendSelfPacket(player,
                     manager.createPacketConstructor(Server.ENTITY_EQUIPMENT, 0,
                             ReflectionManager.createEnumItemSlot(EquipmentSlot.HEAD),
                             ReflectionManager.getNmsItem(new ItemStack(Material.STONE))).createPacket(player.getEntityId(),
-                                    ReflectionManager.createEnumItemSlot(EquipmentSlot.CHEST),
-                                    ReflectionManager.getNmsItem(player.getInventory().getChestplate())));
+                    ReflectionManager.createEnumItemSlot(EquipmentSlot.CHEST),
+                    ReflectionManager.getNmsItem(player.getInventory().getChestplate())));
             sendSelfPacket(player,
                     manager.createPacketConstructor(Server.ENTITY_EQUIPMENT, 0,
                             ReflectionManager.createEnumItemSlot(EquipmentSlot.HEAD),
                             ReflectionManager.getNmsItem(new ItemStack(Material.STONE))).createPacket(player.getEntityId(),
-                                    ReflectionManager.createEnumItemSlot(EquipmentSlot.LEGS),
-                                    ReflectionManager.getNmsItem(player.getInventory().getLeggings())));
+                    ReflectionManager.createEnumItemSlot(EquipmentSlot.LEGS),
+                    ReflectionManager.getNmsItem(player.getInventory().getLeggings())));
             sendSelfPacket(player,
                     manager.createPacketConstructor(Server.ENTITY_EQUIPMENT, 0,
                             ReflectionManager.createEnumItemSlot(EquipmentSlot.HEAD),
                             ReflectionManager.getNmsItem(new ItemStack(Material.STONE))).createPacket(player.getEntityId(),
-                                    ReflectionManager.createEnumItemSlot(EquipmentSlot.FEET),
-                                    ReflectionManager.getNmsItem(player.getInventory().getBoots())));
+                    ReflectionManager.createEnumItemSlot(EquipmentSlot.FEET),
+                    ReflectionManager.getNmsItem(player.getInventory().getBoots())));
             sendSelfPacket(player,
                     manager.createPacketConstructor(Server.ENTITY_EQUIPMENT, 0,
                             ReflectionManager.createEnumItemSlot(EquipmentSlot.HEAD),
                             ReflectionManager.getNmsItem(new ItemStack(Material.STONE))).createPacket(player.getEntityId(),
-                                    ReflectionManager.createEnumItemSlot(EquipmentSlot.HAND),
-                                    ReflectionManager.getNmsItem(player.getInventory().getItemInMainHand())));
+                    ReflectionManager.createEnumItemSlot(EquipmentSlot.HAND),
+                    ReflectionManager.getNmsItem(player.getInventory().getItemInMainHand())));
             sendSelfPacket(player,
                     manager.createPacketConstructor(Server.ENTITY_EQUIPMENT, 0,
                             ReflectionManager.createEnumItemSlot(EquipmentSlot.HEAD),
                             ReflectionManager.getNmsItem(new ItemStack(Material.STONE))).createPacket(player.getEntityId(),
-                                    ReflectionManager.createEnumItemSlot(EquipmentSlot.OFF_HAND),
-                                    ReflectionManager.getNmsItem(player.getInventory().getItemInOffHand())));
+                    ReflectionManager.createEnumItemSlot(EquipmentSlot.OFF_HAND),
+                    ReflectionManager.getNmsItem(player.getInventory().getItemInOffHand())));
 
             Location loc = player.getLocation();
 
@@ -1385,8 +1386,8 @@ public class DisguiseUtilities
             {
                 sendSelfPacket(player,
                         manager.createPacketConstructor(Server.BED, player, ReflectionManager.getBlockPosition(0, 0, 0))
-                                .createPacket(player,
-                                        ReflectionManager.getBlockPosition(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ())));
+                        .createPacket(player,
+                                ReflectionManager.getBlockPosition(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ())));
             }
 
             // Resend any active potion effects
@@ -1396,8 +1397,7 @@ public class DisguiseUtilities
                 sendSelfPacket(player, manager.createPacketConstructor(Server.ENTITY_EFFECT, player.getEntityId(), mobEffect)
                         .createPacket(player.getEntityId(), mobEffect));
             }
-        }
-        catch (Exception ex)
+        } catch (Exception ex)
         {
             ex.printStackTrace();
         }
@@ -1409,7 +1409,8 @@ public class DisguiseUtilities
     }
 
     /**
-     * Method to send a packet to the self disguise, translate his entity ID to the fake id.
+     * Method to send a packet to the self disguise, translate his entity ID to
+     * the fake id.
      */
     private static void sendSelfPacket(final Player player, PacketContainer packet)
     {
@@ -1424,9 +1425,9 @@ public class DisguiseUtilities
             if (packets == null)
             {
                 packets = new PacketContainer[]
-                    {
-                            packet
-                    };
+                {
+                    packet
+                };
             }
 
             for (PacketContainer p : packets)
@@ -1449,16 +1450,14 @@ public class DisguiseUtilities
                             {
                                 ProtocolLibrary.getProtocolManager().sendServerPacket(player, packet, false);
                             }
-                        }
-                        catch (InvocationTargetException e)
+                        } catch (InvocationTargetException e)
                         {
                             e.printStackTrace();
                         }
                     }
                 });
             }
-        }
-        catch (InvocationTargetException e)
+        } catch (InvocationTargetException e)
         {
             e.printStackTrace();
         }

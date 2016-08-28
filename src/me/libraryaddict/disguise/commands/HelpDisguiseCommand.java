@@ -84,8 +84,7 @@ public class HelpDisguiseCommand extends BaseDisguiseCommand
         {
             enumHelp.add(new EnumHelp("AnimalColor", "Animal colors", ChatColor.RED + "/disguisehelp AnimalColors "
                     + ChatColor.GREEN + "- View all the colors you can use for a animal color", AnimalColor.values()));
-        }
-        catch (Exception ex)
+        } catch (Exception ex)
         {
             ex.printStackTrace();
         }
@@ -93,40 +92,36 @@ public class HelpDisguiseCommand extends BaseDisguiseCommand
         {
             enumHelp.add(new EnumHelp("Art", "Arts",
                     ChatColor.RED + "/disguisehelp Art " + ChatColor.GREEN
-                            + "- View all the painting arts you can use on a painting disguise",
+                    + "- View all the painting arts you can use on a painting disguise",
                     (Enum[]) Class.forName("org.bukkit.Art").getEnumConstants()));
-        }
-        catch (Exception ex)
+        } catch (Exception ex)
         {
         }
         try
         {
             enumHelp.add(new EnumHelp("HorseColor", "Horse colors",
                     ChatColor.RED + "/disguisehelp HorseColors " + ChatColor.GREEN
-                            + "- View all the colors you can use for a horses color",
+                    + "- View all the colors you can use for a horses color",
                     (Enum[]) Class.forName("org.bukkit.entity.Horse$Color").getEnumConstants()));
-        }
-        catch (Exception ex)
+        } catch (Exception ex)
         {
         }
         try
         {
             enumHelp.add(new EnumHelp("HorseStyle", "Horse styles",
                     ChatColor.RED + "/disguisehelp HorseStyles " + ChatColor.GREEN
-                            + "- View all the styles you can use for a horses style",
+                    + "- View all the styles you can use for a horses style",
                     (Enum[]) Class.forName("org.bukkit.entity.Horse$Style").getEnumConstants()));
-        }
-        catch (Exception ex)
+        } catch (Exception ex)
         {
         }
         try
         {
             enumHelp.add(new EnumHelp("OcelotType", "Ocelot types",
                     ChatColor.RED + "/disguisehelp OcelotTypes " + ChatColor.GREEN
-                            + "- View all the ocelot types you can use for ocelots",
+                    + "- View all the ocelot types you can use for ocelots",
                     (Enum[]) Class.forName("org.bukkit.entity.Ocelot$Type").getEnumConstants()));
-        }
-        catch (Exception ex)
+        } catch (Exception ex)
         {
         }
         try
@@ -143,8 +138,7 @@ public class HelpDisguiseCommand extends BaseDisguiseCommand
             enumHelp.add(new EnumHelp("PotionEffect", "PotionEffect",
                     ChatColor.RED + "/disguisehelp PotionEffect " + ChatColor.GREEN + "- View all the potion effects you can set",
                     enumReturns.toArray(new String[enumReturns.size()])));
-        }
-        catch (Exception ex)
+        } catch (Exception ex)
         {
             ex.printStackTrace();
         }
@@ -152,15 +146,14 @@ public class HelpDisguiseCommand extends BaseDisguiseCommand
         {
             enumHelp.add(new EnumHelp("Profession", "Villager professions",
                     ChatColor.RED + "/disguisehelp Professions " + ChatColor.GREEN
-                            + "- View all the professions you can set on a villager",
+                    + "- View all the professions you can set on a villager",
                     (Enum[]) Class.forName("org.bukkit.entity.Villager$Profession").getEnumConstants()));
-        }
-        catch (Exception ex)
+        } catch (Exception ex)
         {
         }
         enumHelp.add(new EnumHelp("Direction", "Directions",
                 ChatColor.RED + "/disguisehelp Directions " + ChatColor.GREEN
-                        + "- View the five directions usable on player setsleeping disguise",
+                + "- View the five directions usable on player setsleeping disguise",
                 Arrays.copyOf(BlockFace.values(), 5)));
         enumHelp.add(new EnumHelp("RabbitType", "RabbitType",
                 ChatColor.RED + "/disguisehelp RabbitType " + ChatColor.GREEN + "View the kinds of rabbits you can turn into",
@@ -171,9 +164,9 @@ public class HelpDisguiseCommand extends BaseDisguiseCommand
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args)
     {
         for (String node : new String[]
-            {
-                    "disguise", "disguiseradius", "disguiseentity", "disguiseplayer"
-            })
+        {
+            "disguise", "disguiseradius", "disguiseentity", "disguiseplayer"
+        })
         {
             HashMap<DisguiseType, HashMap<ArrayList<String>, Boolean>> permMap = getPermissions(sender,
                     "libsdisguises." + node + ".");
@@ -183,8 +176,7 @@ public class HelpDisguiseCommand extends BaseDisguiseCommand
                 {
                     sendCommandUsage(sender, null);
                     return true;
-                }
-                else
+                } else
                 {
                     EnumHelp help = null;
                     for (EnumHelp s : enumHelp)
@@ -244,8 +236,7 @@ public class HelpDisguiseCommand extends BaseDisguiseCommand
                                                 allowed = true;
                                                 break;
                                             }
-                                        }
-                                        else if (!key.contains(method.getName().toLowerCase()))
+                                        } else if (!key.contains(method.getName().toLowerCase()))
                                         {
                                             allowed = true;
                                             break;
@@ -262,68 +253,52 @@ public class HelpDisguiseCommand extends BaseDisguiseCommand
                                 if (c == String.class)
                                 {
                                     valueType = "String";
-                                }
-                                else if (boolean.class == c)
+                                } else if (boolean.class == c)
                                 {
                                     valueType = "True/False";
-                                }
-                                else if (int.class == c)
+                                } else if (int.class == c)
                                 {
                                     valueType = "Number";
-                                }
-                                else if (float.class == c || double.class == c)
+                                } else if (float.class == c || double.class == c)
                                 {
                                     valueType = "Decimal";
-                                }
-                                else if (AnimalColor.class == c)
+                                } else if (AnimalColor.class == c)
                                 {
                                     valueType = "Color";
-                                }
-                                else if (ItemStack.class == c)
+                                } else if (ItemStack.class == c)
                                 {
                                     valueType = "Item (id:damage)";
-                                }
-                                else if (ItemStack[].class == c)
+                                } else if (ItemStack[].class == c)
                                 {
                                     valueType = "4 items (id:damage,id,...)";
-                                }
-                                else if (c.getSimpleName().equals("Style"))
+                                } else if (c.getSimpleName().equals("Style"))
                                 {
                                     valueType = "Horse Style";
-                                }
-                                else if (c.getSimpleName().equals("Color"))
+                                } else if (c.getSimpleName().equals("Color"))
                                 {
                                     valueType = "Horse Color";
-                                }
-                                else if (c.getSimpleName().equals("Type"))
+                                } else if (c.getSimpleName().equals("Type"))
                                 {
                                     valueType = "Ocelot type";
-                                }
-                                else if (c.getSimpleName().equals("Profession"))
+                                } else if (c.getSimpleName().equals("Profession"))
                                 {
                                     valueType = "Villager Profession";
-                                }
-                                else if (PotionEffectType.class == c)
+                                } else if (PotionEffectType.class == c)
                                 {
                                     valueType = "Potion effect";
-                                }
-                                else if (c == int[].class)
+                                } else if (c == int[].class)
                                 {
                                     valueType = "number,number,number...";
-                                }
-                                else if (c == BlockFace.class)
+                                } else if (c == BlockFace.class)
                                 {
                                     valueType = "direction";
-                                }
-                                else if (c == RabbitType.class)
+                                } else if (c == RabbitType.class)
                                 {
                                     valueType = "rabbit type";
-                                }
-                                else if (c == BlockPosition.class)
+                                } else if (c == BlockPosition.class)
                                 {
                                     valueType = "three numbers";
-                                }
-                                else if (c == WrappedGameProfile.class)
+                                } else if (c == WrappedGameProfile.class)
                                 {
                                     valueType = "gameprofile";
                                 }
@@ -335,8 +310,7 @@ public class HelpDisguiseCommand extends BaseDisguiseCommand
                                     if (declaring == LivingWatcher.class)
                                     {
                                         methodColor = ChatColor.AQUA;
-                                    }
-                                    else if (!(FlagWatcher.class.isAssignableFrom(declaring)) || declaring == FlagWatcher.class)
+                                    } else if (!(FlagWatcher.class.isAssignableFrom(declaring)) || declaring == FlagWatcher.class)
                                     {
                                         methodColor = ChatColor.GRAY;
                                     }
@@ -347,8 +321,7 @@ public class HelpDisguiseCommand extends BaseDisguiseCommand
                                 }
                             }
                         }
-                    }
-                    catch (Exception ex)
+                    } catch (Exception ex)
                     {
                         ex.printStackTrace();
                     }

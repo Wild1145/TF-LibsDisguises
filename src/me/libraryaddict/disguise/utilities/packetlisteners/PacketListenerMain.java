@@ -21,6 +21,7 @@ import me.libraryaddict.disguise.utilities.PacketsManager;
 
 public class PacketListenerMain extends PacketAdapter
 {
+
     private LibsDisguises libsDisguises;
 
     public PacketListenerMain(LibsDisguises plugin, ArrayList<PacketType> packetsToListen)
@@ -34,10 +35,14 @@ public class PacketListenerMain extends PacketAdapter
     public void onPacketSending(PacketEvent event)
     {
         if (event.isCancelled())
+        {
             return;
+        }
 
         if (event.getPlayer().getName().contains("UNKNOWN[")) // If the player is temporary
+        {
             return;
+        }
 
         final Player observer = event.getPlayer();
 
@@ -49,15 +54,16 @@ public class PacketListenerMain extends PacketAdapter
         // If the entity is the same as the sender. Don't disguise!
         // Prevents problems and there is no advantage to be gained.
         if (entity == observer)
+        {
             return;
+        }
 
         PacketContainer[][] packets;
 
         try
         {
             packets = PacketsManager.transformPacket(event.getPacket(), event.getPlayer(), entity);
-        }
-        catch (Exception ex)
+        } catch (Exception ex)
         {
             ex.printStackTrace();
             event.setCancelled(true);
@@ -95,15 +101,13 @@ public class PacketListenerMain extends PacketAdapter
                         {
                             ProtocolLibrary.getProtocolManager().sendServerPacket(observer, packet, false);
                         }
-                    }
-                    catch (InvocationTargetException e)
+                    } catch (InvocationTargetException e)
                     {
                         e.printStackTrace();
                     }
                 }
             }, 2);
-        }
-        catch (InvocationTargetException ex)
+        } catch (InvocationTargetException ex)
         {
             ex.printStackTrace();
         }

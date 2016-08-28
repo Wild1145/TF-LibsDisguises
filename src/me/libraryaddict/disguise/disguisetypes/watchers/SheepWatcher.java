@@ -46,8 +46,7 @@ public class SheepWatcher extends AgeableWatcher
         if (flag)
         {
             setValue(FlagType.SHEEP_WOOL, (byte) (b0 | 16));
-        }
-        else
+        } else
         {
             setValue(FlagType.SHEEP_WOOL, (byte) (b0 & -17));
         }

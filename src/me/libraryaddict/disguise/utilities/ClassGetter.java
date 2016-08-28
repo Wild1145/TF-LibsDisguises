@@ -41,12 +41,10 @@ public class ClassGetter
         try
         {
             return Class.forName(className);
-        }
-        catch (ClassNotFoundException e)
+        } catch (ClassNotFoundException e)
         {
             throw new RuntimeException("Unexpected ClassNotFoundException loading class '" + className + "'");
-        }
-        catch (NoClassDefFoundError e)
+        } catch (NoClassDefFoundError e)
         {
             return null;
         }
@@ -86,8 +84,7 @@ public class ClassGetter
             }
 
             jarFile.close();
-        }
-        catch (Exception ex)
+        } catch (Exception ex)
         {
             ex.printStackTrace();
         }

@@ -76,8 +76,7 @@ public class MobDisguise extends TargetedDisguise
             if (getWatcher() instanceof AgeableWatcher)
             {
                 return ((AgeableWatcher) getWatcher()).isAdult();
-            }
-            else if (getWatcher() instanceof ZombieWatcher)
+            } else if (getWatcher() instanceof ZombieWatcher)
             {
                 return ((ZombieWatcher) getWatcher()).isAdult();
             }

@@ -5,6 +5,7 @@ import me.libraryaddict.disguise.disguisetypes.FlagType;
 
 public class SnowmanWatcher extends InsentientWatcher
 {
+
     public SnowmanWatcher(Disguise disguise)
     {
         super(disguise);

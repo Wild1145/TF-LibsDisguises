@@ -11,6 +11,7 @@ import me.libraryaddict.disguise.disguisetypes.FlagWatcher;
 
 public class ItemFrameWatcher extends FlagWatcher
 {
+
     public ItemFrameWatcher(Disguise disguise)
     {
         super(disguise);
@@ -41,7 +42,7 @@ public class ItemFrameWatcher extends FlagWatcher
         newItem = newItem.clone();
         newItem.setAmount(1);
 
-        setValue(FlagType.ITEMFRAME_ITEM, Optional.<ItemStack> of(newItem));
+        setValue(FlagType.ITEMFRAME_ITEM, Optional.<ItemStack>of(newItem));
         sendData(FlagType.ITEMFRAME_ITEM);
     }
 

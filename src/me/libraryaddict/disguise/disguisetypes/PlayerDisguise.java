@@ -14,6 +14,7 @@ import me.libraryaddict.disguise.utilities.ReflectionManager;
 
 public class PlayerDisguise extends TargetedDisguise
 {
+
     private LibsProfileLookup currentLookup;
     private WrappedGameProfile gameProfile;
     private String playerName;
@@ -93,8 +94,7 @@ public class PlayerDisguise extends TargetedDisguise
         {
             disguise.skinToUse = getSkin();
             disguise.gameProfile = ReflectionManager.getClonedProfile(getGameProfile());
-        }
-        else
+        } else
         {
             disguise.setSkin(getSkin());
         }
@@ -120,8 +120,7 @@ public class PlayerDisguise extends TargetedDisguise
             if (getSkin() != null)
             {
                 gameProfile = ReflectionManager.getGameProfile(null, getName());
-            }
-            else
+            } else
             {
                 gameProfile = ReflectionManager.getGameProfileWithThisSkin(null, getName(),
                         DisguiseUtilities.getProfileFromMojang(this));
@@ -248,8 +247,7 @@ public class PlayerDisguise extends TargetedDisguise
         {
             currentLookup = null;
             gameProfile = null;
-        }
-        else
+        } else
         {
             if (newSkin.length() > 16)
             {
@@ -262,7 +260,9 @@ public class PlayerDisguise extends TargetedDisguise
                 public void onLookup(WrappedGameProfile gameProfile)
                 {
                     if (currentLookup != this || gameProfile == null)
+                    {
                         return;
+                    }
 
                     setSkin(gameProfile);
 
@@ -285,8 +285,7 @@ public class PlayerDisguise extends TargetedDisguise
     /**
      * Set the GameProfile, without tampering.
      *
-     * @param gameProfile
-     *            GameProfile
+     * @param gameProfile GameProfile
      * @return
      */
     public PlayerDisguise setSkin(WrappedGameProfile gameProfile)

@@ -17,7 +17,7 @@ public class GuardianWatcher extends InsentientWatcher
 
     /**
      * Is this guardian targetting someone?
-     * 
+     *
      * @return
      */
     public boolean isTarget()
@@ -27,7 +27,7 @@ public class GuardianWatcher extends InsentientWatcher
 
     /**
      * Shoot a beam at the given entityId.
-     * 
+     *
      * @param entityId
      */
     public void setTarget(int entityId)
@@ -43,7 +43,7 @@ public class GuardianWatcher extends InsentientWatcher
 
     /**
      * Shoot a beam at the given player name.
-     * 
+     *
      * @param playername
      */
     public void setTarget(String playername)
@@ -51,7 +51,9 @@ public class GuardianWatcher extends InsentientWatcher
         Player player = Bukkit.getPlayer(playername);
 
         if (player == null)
+        {
             return;
+        }
 
         setValue(FlagType.GUARDIAN_TARGET, player.getEntityId());
         sendData(FlagType.GUARDIAN_TARGET);
@@ -89,8 +91,7 @@ public class GuardianWatcher extends InsentientWatcher
         if (flag)
         {
             setValue(FlagType.GUARDIAN_FLAG, (byte) (b0 | no));
-        }
-        else
+        } else
         {
             setValue(FlagType.GUARDIAN_FLAG, (byte) (b0 & -(no + 1)));
         }

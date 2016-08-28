@@ -50,10 +50,14 @@ public class ShulkerWatcher extends InsentientWatcher
     public void setShieldHeight(int newHeight)
     {
         if (newHeight < 0)
+        {
             newHeight = 0;
+        }
 
         if (newHeight > 127)
+        {
             newHeight = 127;
+        }
 
         setValue(FlagType.SHULKER_PEEKING, (byte) newHeight);
         sendData(FlagType.SHULKER_PEEKING);

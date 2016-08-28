@@ -20,11 +20,10 @@ public class UndisguiseEntityCommand implements CommandExecutor
         }
         if (sender.hasPermission("libsdisguises.undisguiseentity"))
         {
-            
+
             LibsDisguises.getInstance().getListener().setDisguiseEntity(sender.getName(), null);
             sender.sendMessage(ChatColor.RED + "Right click a disguised entity to undisguise them!");
-        }
-        else
+        } else
         {
             sender.sendMessage(ChatColor.RED + "You are forbidden to use this command.");
         }

@@ -19,6 +19,7 @@ import me.libraryaddict.disguise.utilities.DisguiseUtilities;
 
 public class PlayerWatcher extends LivingWatcher
 {
+
     private boolean isInBed;
     private BlockFace sleepingDirection;
 
@@ -56,8 +57,7 @@ public class PlayerWatcher extends LivingWatcher
             {
                 this.sleepingDirection = BlockFace
                         .values()[Math.round(this.getDisguise().getEntity().getLocation().getYaw() / 90F) & 0x3];
-            }
-            else
+            } else
             {
                 return BlockFace.EAST;
             }
@@ -72,7 +72,6 @@ public class PlayerWatcher extends LivingWatcher
     // Bit 4 (0x10): Left Pants Leg enabled
     // Bit 5 (0x20): Right Pants Leg enabled
     // Bit 6 (0x40): Hat enabled
-
     private boolean isSkinFlag(int i)
     {
         return ((byte) getValue(FlagType.PLAYER_SKIN) & 1 << i) != 0;
@@ -188,7 +187,8 @@ public class PlayerWatcher extends LivingWatcher
     }
 
     /**
-     * If no BlockFace is supplied. It grabs it from the entities facing direction if applicable.
+     * If no BlockFace is supplied. It grabs it from the entities facing
+     * direction if applicable.
      *
      * @param sleeping
      * @param sleepingDirection
@@ -223,8 +223,7 @@ public class PlayerWatcher extends LivingWatcher
 
                                 ProtocolLibrary.getProtocolManager().sendServerPacket(player, packet);
                             }
-                        }
-                        else
+                        } else
                         {
                             for (PacketContainer packet : packets)
                             {
@@ -232,8 +231,7 @@ public class PlayerWatcher extends LivingWatcher
                             }
                         }
                     }
-                }
-                else
+                } else
                 {
                     PacketContainer packet = new PacketContainer(Server.ANIMATION);
 
@@ -247,8 +245,7 @@ public class PlayerWatcher extends LivingWatcher
                         ProtocolLibrary.getProtocolManager().sendServerPacket(player, packet);
                     }
                 }
-            }
-            catch (Exception ex)
+            } catch (Exception ex)
             {
                 ex.printStackTrace();
             }
@@ -262,8 +259,7 @@ public class PlayerWatcher extends LivingWatcher
         if (flag)
         {
             setValue(FlagType.PLAYER_SKIN, (byte) (b0 | 1 << i));
-        }
-        else
+        } else
         {
             setValue(FlagType.PLAYER_SKIN, (byte) (b0 & (~1 << i)));
         }

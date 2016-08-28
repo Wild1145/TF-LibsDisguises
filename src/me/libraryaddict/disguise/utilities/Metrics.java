@@ -131,12 +131,13 @@ public class Metrics
     }
 
     /**
-     * Construct and create a Graph that can be used to separate specific plotters to their own graphs on the metrics website.
-     * Plotters can be added to the graph object returned.
+     * Construct and create a Graph that can be used to separate specific
+     * plotters to their own graphs on the metrics website. Plotters can be
+     * added to the graph object returned.
      *
-     * @param name
-     *            The name of the graph
-     * @return Graph object created. Will never return NULL under normal circumstances unless bad parameters are given
+     * @param name The name of the graph
+     * @return Graph object created. Will never return NULL under normal
+     * circumstances unless bad parameters are given
      */
     public Graph createGraph(final String name)
     {
@@ -153,10 +154,10 @@ public class Metrics
     }
 
     /**
-     * Add a Graph object to BukkitMetrics that represents data for the plugin that should be sent to the backend
+     * Add a Graph object to BukkitMetrics that represents data for the plugin
+     * that should be sent to the backend
      *
-     * @param graph
-     *            The name of the graph
+     * @param graph The name of the graph
      */
     public void addGraph(final Graph graph)
     {
@@ -168,8 +169,10 @@ public class Metrics
     }
 
     /**
-     * Start measuring statistics. This will immediately create an async repeating task as the plugin and send the initial data to
-     * the metrics backend, and then after that it will post in increments of PING_INTERVAL * 1200 ticks.
+     * Start measuring statistics. This will immediately create an async
+     * repeating task as the plugin and send the initial data to the metrics
+     * backend, and then after that it will post in increments of PING_INTERVAL
+     * * 1200 ticks.
      *
      * @return True if statistics measuring is running, otherwise false.
      */
@@ -219,8 +222,7 @@ public class Metrics
                         // After the first post we set firstPost to false
                         // Each post thereafter will be a ping
                         firstPost = false;
-                    }
-                    catch (IOException e)
+                    } catch (IOException e)
                     {
                         if (debug)
                         {
@@ -246,8 +248,7 @@ public class Metrics
             {
                 // Reload the metrics file
                 configuration.load(getConfigFile());
-            }
-            catch (IOException | InvalidConfigurationException ex)
+            } catch (IOException | InvalidConfigurationException ex)
             {
                 if (debug)
                 {
@@ -260,7 +261,8 @@ public class Metrics
     }
 
     /**
-     * Enables metrics for the server by setting "opt-out" to false in the config file and starting the metrics task.
+     * Enables metrics for the server by setting "opt-out" to false in the
+     * config file and starting the metrics task.
      *
      * @throws java.io.IOException
      */
@@ -284,7 +286,8 @@ public class Metrics
     }
 
     /**
-     * Disables metrics for the server by setting "opt-out" to true in the config file and canceling the metrics task.
+     * Disables metrics for the server by setting "opt-out" to true in the
+     * config file and canceling the metrics task.
      *
      * @throws java.io.IOException
      */
@@ -309,7 +312,8 @@ public class Metrics
     }
 
     /**
-     * Gets the File object of the config file that should be used to store data such as the GUID and opt-out status
+     * Gets the File object of the config file that should be used to store data
+     * such as the GUID and opt-out status
      *
      * @return the File object for the config file
      */
@@ -411,8 +415,7 @@ public class Metrics
         if (isMineshafterPresent())
         {
             connection = url.openConnection(Proxy.NO_PROXY);
-        }
-        else
+        } else
         {
             connection = url.openConnection();
         }
@@ -448,17 +451,13 @@ public class Metrics
             if (response == null)
             {
                 response = "null";
-            }
-            else if (response.startsWith("7"))
+            } else if (response.startsWith("7"))
             {
                 response = response.substring(response.startsWith("7,") ? 2 : 1);
             }
             throw new IOException(response);
-        }
-        else
-        {
-            // Is this the first update this hour?
-            if (response.equals("1") || response.contains("This is your first update this hour"))
+        } else // Is this the first update this hour?
+         if (response.equals("1") || response.contains("This is your first update this hour"))
             {
                 synchronized (graphs)
                 {
@@ -471,7 +470,6 @@ public class Metrics
                     }
                 }
             }
-        }
     }
 
     /**
@@ -488,20 +486,17 @@ public class Metrics
         {
             gzos = new GZIPOutputStream(baos);
             gzos.write(input.getBytes("UTF-8"));
-        }
-        catch (IOException e)
+        } catch (IOException e)
         {
             e.printStackTrace();
-        }
-        finally
+        } finally
         {
             if (gzos != null)
             {
                 try
                 {
                     gzos.close();
-                }
-                catch (IOException ignore)
+                } catch (IOException ignore)
                 {
                 }
             }
@@ -510,7 +505,8 @@ public class Metrics
     }
 
     /**
-     * Check if mineshafter is present. If it is, we need to bypass it to send POST requests
+     * Check if mineshafter is present. If it is, we need to bypass it to send
+     * POST requests
      *
      * @return true if mineshafter is installed on the server
      */
@@ -520,8 +516,7 @@ public class Metrics
         {
             Class.forName("mineshafter.MineServer");
             return true;
-        }
-        catch (Exception e)
+        } catch (Exception e)
         {
             return false;
         }
@@ -545,8 +540,7 @@ public class Metrics
                 Double.parseDouble(value);
                 isValueNumeric = true;
             }
-        }
-        catch (NumberFormatException e)
+        } catch (NumberFormatException e)
         {
             isValueNumeric = false;
         }
@@ -559,8 +553,7 @@ public class Metrics
         if (isValueNumeric)
         {
             json.append(value);
-        }
-        else
+        } else
         {
             json.append(escapeJSON(value));
         }
@@ -581,34 +574,33 @@ public class Metrics
             char chr = text.charAt(index);
             switch (chr)
             {
-            case '"':
-            case '\\':
-                builder.append('\\');
-                builder.append(chr);
-                break;
-            case '\b':
-                builder.append("\\b");
-                break;
-            case '\t':
-                builder.append("\\t");
-                break;
-            case '\n':
-                builder.append("\\n");
-                break;
-            case '\r':
-                builder.append("\\r");
-                break;
-            default:
-                if (chr < ' ')
-                {
-                    String t = "000" + Integer.toHexString(chr);
-                    builder.append("\\u").append(t.substring(t.length() - 4));
-                }
-                else
-                {
+                case '"':
+                case '\\':
+                    builder.append('\\');
                     builder.append(chr);
-                }
-                break;
+                    break;
+                case '\b':
+                    builder.append("\\b");
+                    break;
+                case '\t':
+                    builder.append("\\t");
+                    break;
+                case '\n':
+                    builder.append("\\n");
+                    break;
+                case '\r':
+                    builder.append("\\r");
+                    break;
+                default:
+                    if (chr < ' ')
+                    {
+                        String t = "000" + Integer.toHexString(chr);
+                        builder.append("\\u").append(t.substring(t.length() - 4));
+                    } else
+                    {
+                        builder.append(chr);
+                    }
+                    break;
             }
         }
         builder.append('"');
@@ -618,8 +610,7 @@ public class Metrics
     /**
      * Encode text as UTF-8
      *
-     * @param text
-     *            the text to encode
+     * @param text the text to encode
      * @return the encoded text, as UTF-8
      */
     private static String urlEncode(final String text) throws UnsupportedEncodingException
@@ -634,7 +625,8 @@ public class Metrics
     {
 
         /**
-         * The graph's name, alphanumeric and spaces only :) If it does not comply to the above when submitted, it is rejected
+         * The graph's name, alphanumeric and spaces only :) If it does not
+         * comply to the above when submitted, it is rejected
          */
         private final String name;
         /**
@@ -660,8 +652,7 @@ public class Metrics
         /**
          * Add a plotter to the graph, which will be used to plot entries
          *
-         * @param plotter
-         *            the plotter to add to the graph
+         * @param plotter the plotter to add to the graph
          */
         public void addPlotter(final Plotter plotter)
         {
@@ -671,8 +662,7 @@ public class Metrics
         /**
          * Remove a plotter from the graph
          *
-         * @param plotter
-         *            the plotter to remove from the graph
+         * @param plotter the plotter to remove from the graph
          */
         public void removePlotter(final Plotter plotter)
         {
@@ -707,7 +697,8 @@ public class Metrics
         }
 
         /**
-         * Called when the server owner decides to opt-out of BukkitMetrics while the server is running.
+         * Called when the server owner decides to opt-out of BukkitMetrics
+         * while the server is running.
          */
         protected void onOptOut()
         {
@@ -736,8 +727,8 @@ public class Metrics
         /**
          * Construct a plotter with a specific plot name
          *
-         * @param name
-         *            the name of the plotter to use, which will show up on the website
+         * @param name the name of the plotter to use, which will show up on the
+         * website
          */
         public Plotter(final String name)
         {
@@ -745,9 +736,11 @@ public class Metrics
         }
 
         /**
-         * Get the current value for the plotted point. Since this function defers to an external function it may or may not
-         * return immediately thus cannot be guaranteed to be thread friendly or safe. This function can be called from any thread
-         * so care should be taken when accessing resources that need to be synchronized.
+         * Get the current value for the plotted point. Since this function
+         * defers to an external function it may or may not return immediately
+         * thus cannot be guaranteed to be thread friendly or safe. This
+         * function can be called from any thread so care should be taken when
+         * accessing resources that need to be synchronized.
          *
          * @return the current value for the point to be plotted.
          */

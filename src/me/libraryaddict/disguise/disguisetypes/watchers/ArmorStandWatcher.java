@@ -9,6 +9,7 @@ import me.libraryaddict.disguise.disguisetypes.FlagType;
 
 public class ArmorStandWatcher extends LivingWatcher
 {
+
     public ArmorStandWatcher(Disguise disguise)
     {
         super(disguise);
@@ -42,7 +43,9 @@ public class ArmorStandWatcher extends LivingWatcher
     private EulerAngle getPose(FlagType<Vector3F> type)
     {
         if (!hasValue(type))
+        {
             return new EulerAngle(0, 0, 0);
+        }
 
         Vector3F vec = getValue(type);
 
@@ -91,8 +94,7 @@ public class ArmorStandWatcher extends LivingWatcher
         if (isTrue)
         {
             b1 = (byte) (b1 | value);
-        }
-        else
+        } else
         {
             b1 = (byte) (b1 & value);
         }

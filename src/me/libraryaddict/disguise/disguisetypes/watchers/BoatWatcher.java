@@ -10,6 +10,7 @@ import me.libraryaddict.disguise.disguisetypes.FlagWatcher;
 
 public class BoatWatcher extends FlagWatcher
 {
+
     public BoatWatcher(Disguise disguise)
     {
         super(disguise);

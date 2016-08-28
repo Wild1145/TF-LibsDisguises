@@ -5,6 +5,7 @@ import me.libraryaddict.disguise.disguisetypes.FlagType;
 
 public class BlazeWatcher extends InsentientWatcher
 {
+
     public BlazeWatcher(Disguise disguise)
     {
         super(disguise);

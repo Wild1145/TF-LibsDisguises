@@ -34,21 +34,17 @@ public class CloneDisguiseCommand extends BaseDisguiseCommand
                         || StringUtils.startsWithIgnoreCase(option, "ignoreEnquip"))
                 {
                     doEquipment = false;
-                }
-                else if (option.equalsIgnoreCase("doSneakSprint"))
+                } else if (option.equalsIgnoreCase("doSneakSprint"))
                 {
                     doSneak = true;
                     doSprint = true;
-                }
-                else if (option.equalsIgnoreCase("doSneak"))
+                } else if (option.equalsIgnoreCase("doSneak"))
                 {
                     doSneak = true;
-                }
-                else if (option.equalsIgnoreCase("doSprint"))
+                } else if (option.equalsIgnoreCase("doSprint"))
                 {
                     doSprint = true;
-                }
-                else
+                } else
                 {
                     sender.sendMessage(ChatColor.DARK_RED + "Unknown option '" + option
                             + "' - Valid options are 'IgnoreEquipment' 'DoSneakSprint' 'DoSneak' 'DoSprint'");
@@ -56,13 +52,12 @@ public class CloneDisguiseCommand extends BaseDisguiseCommand
                 }
             }
             LibsDisguises.getInstance().getListener().setDisguiseClone(sender.getName(), new Boolean[]
-                {
-                        doEquipment, doSneak, doSprint
-                });
+            {
+                doEquipment, doSneak, doSprint
+            });
             sender.sendMessage(ChatColor.RED + "Right click a entity in the next " + DisguiseConfig.getDisguiseCloneExpire()
                     + " seconds to grab the disguise reference!");
-        }
-        else
+        } else
         {
             sender.sendMessage(ChatColor.RED + "You are forbidden to use this command.");
         }

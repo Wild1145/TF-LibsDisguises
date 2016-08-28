@@ -10,6 +10,7 @@ import me.libraryaddict.disguise.disguisetypes.FlagWatcher;
 
 public class DroppedItemWatcher extends FlagWatcher
 {
+
     public DroppedItemWatcher(Disguise disguise)
     {
         super(disguise);
@@ -22,7 +23,7 @@ public class DroppedItemWatcher extends FlagWatcher
 
     public void setItemStack(ItemStack item)
     {
-        setValue(FlagType.DROPPED_ITEM, Optional.<ItemStack> of(item));
+        setValue(FlagType.DROPPED_ITEM, Optional.<ItemStack>of(item));
         sendData(FlagType.DROPPED_ITEM);
     }
 }

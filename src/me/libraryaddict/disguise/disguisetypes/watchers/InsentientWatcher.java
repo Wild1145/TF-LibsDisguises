@@ -7,6 +7,7 @@ import me.libraryaddict.disguise.disguisetypes.FlagType;
 
 public class InsentientWatcher extends LivingWatcher
 {
+
     public InsentientWatcher(Disguise disguise)
     {
         super(disguise);
@@ -41,8 +42,7 @@ public class InsentientWatcher extends LivingWatcher
         if (flag)
         {
             setValue(FlagType.INSENTIENT_META, (byte) (b0 | 1 << i));
-        }
-        else
+        } else
         {
             setValue(FlagType.INSENTIENT_META, (byte) (b0 & (~1 << i)));
         }

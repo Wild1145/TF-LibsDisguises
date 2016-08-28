@@ -9,6 +9,7 @@ import me.libraryaddict.disguise.disguisetypes.FlagType;
 
 public class TameableWatcher extends AgeableWatcher
 {
+
     public TameableWatcher(Disguise disguise)
     {
         super(disguise);
@@ -41,8 +42,7 @@ public class TameableWatcher extends AgeableWatcher
         if (flag)
         {
             setValue(FlagType.TAMEABLE_META, (byte) (value | no));
-        }
-        else
+        } else
         {
             setValue(FlagType.TAMEABLE_META, (byte) (value & -(no + 1)));
         }

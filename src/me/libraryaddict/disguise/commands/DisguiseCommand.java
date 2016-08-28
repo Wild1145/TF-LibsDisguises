@@ -15,97 +15,122 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class DisguiseCommand extends BaseDisguiseCommand {
+public class DisguiseCommand extends BaseDisguiseCommand
+{
 
     @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args)
+    {
 
-        if (sender.getName().equals("CONSOLE")) {
+        if (sender.getName().equals("CONSOLE"))
+        {
             sender.sendMessage(ChatColor.RED + "You may not use this command from the console!");
             return true;
         }
-        
-        if(args.length >= 2) {
-            if(args[1].contains(":")) {
+
+        if (args.length >= 2)
+        {
+            if (args[1].contains(":"))
+            {
                 sender.sendMessage("That disguise is forbidden.");
                 return true;
             }
         }
         Disguise disguise;
-        try {
+        try
+        {
             disguise = parseDisguise(sender, args, getPermissions(sender));
-        } catch (DisguiseParseException ex) {
-            if (ex.getMessage() != null) {
+        } catch (DisguiseParseException ex)
+        {
+            if (ex.getMessage() != null)
+            {
                 sender.sendMessage(ex.getMessage());
             }
 
             return true;
-        } catch (Exception ex) {
+        } catch (Exception ex)
+        {
 
             return true;
         }
 
-        if (Arrays.toString(args).toLowerCase().contains("item_frame")) {
+        if (Arrays.toString(args).toLowerCase().contains("item_frame"))
+        {
             sender.sendMessage(ChatColor.RED + "That disguise is forbidden.");
             return true;
         }
 
-        if (Arrays.toString(args).toLowerCase().contains("itemframe")) {
+        if (Arrays.toString(args).toLowerCase().contains("itemframe"))
+        {
             sender.sendMessage(ChatColor.RED + "That disguise is forbidden.");
             return true;
 
         }
 
-        if (Arrays.toString(args).toLowerCase().contains("hay_block")) {
+        if (Arrays.toString(args).toLowerCase().contains("hay_block"))
+        {
             sender.sendMessage(ChatColor.RED + "That disguise is forbidden.");
             return true;
         }
-        if (Arrays.toString(args).toLowerCase().contains("portal")) {
+        if (Arrays.toString(args).toLowerCase().contains("portal"))
+        {
             sender.sendMessage(ChatColor.RED + "That disguise is forbidden.");
             return true;
         }
 
-        if (Arrays.toString(args).contains("90")) {
+        if (Arrays.toString(args).contains("90"))
+        {
             sender.sendMessage(ChatColor.RED + "That disguise is forbidden.");
             return true;
         }
-        
-         if(Arrays.toString(args).contains("fire")) {
-              sender.sendMessage(ChatColor.RED + "That disguise is forbidden.");
-          }
-        
-        if(Arrays.toString(args).contains("carrot")) {
+
+        if (Arrays.toString(args).contains("fire"))
+        {
+            sender.sendMessage(ChatColor.RED + "That disguise is forbidden.");
+        }
+
+        if (Arrays.toString(args).contains("carrot"))
+        {
             sender.sendMessage(ChatColor.RED + "That disguise is forbidden.");
             return true;
         }
-       
-        if (DisguiseConfig.isNameOfPlayerShownAboveDisguise()) {
-            if (disguise.getWatcher() instanceof LivingWatcher) {
+
+        if (DisguiseConfig.isNameOfPlayerShownAboveDisguise())
+        {
+            if (disguise.getWatcher() instanceof LivingWatcher)
+            {
                 disguise.getWatcher().setCustomName(((Player) sender).getDisplayName());
 
-                if (DisguiseConfig.isNameAboveHeadAlwaysVisible()) {
+                if (DisguiseConfig.isNameAboveHeadAlwaysVisible())
+                {
                     disguise.getWatcher().setCustomNameVisible(true);
                 }
             }
         }
-        if (!DisallowedDisguises.disabled) {
+        if (!DisallowedDisguises.disabled)
+        {
 
-            if (DisallowedDisguises.isAllowed(disguise)) {
+            if (DisallowedDisguises.isAllowed(disguise))
+            {
 
                 DisguiseAPI.disguiseToAll((Player) sender, disguise);
 
-            } else {
+            } else
+            {
                 sender.sendMessage(ChatColor.RED + "That disguise is forbidden.");
                 return true;
             }
-        } else {
+        } else
+        {
             sender.sendMessage(ChatColor.RED + "Disguises are disabled.");
             return true;
         }
 
-        if (disguise.isDisguiseInUse()) {
+        if (disguise.isDisguiseInUse())
+        {
             sender.sendMessage(ChatColor.RED + "Now disguised as a " + disguise.getType().toReadable());
-        } else {
+        } else
+        {
             sender.sendMessage(ChatColor.RED + "Failed to disguise as a " + disguise.getType().toReadable());
         }
 
@@ -116,16 +141,19 @@ public class DisguiseCommand extends BaseDisguiseCommand {
      * Send the player the information
      */
     @Override
-    protected void sendCommandUsage(CommandSender sender, HashMap<DisguiseType, HashMap<ArrayList<String>, Boolean>> map) {
+    protected void sendCommandUsage(CommandSender sender, HashMap<DisguiseType, HashMap<ArrayList<String>, Boolean>> map)
+    {
         ArrayList<String> allowedDisguises = getAllowedDisguises(map);
         sender.sendMessage(ChatColor.DARK_GREEN + "Choose a disguise to become the disguise!");
         sender.sendMessage(ChatColor.DARK_GREEN + "You can use the disguises: " + ChatColor.GREEN
                 + StringUtils.join(allowedDisguises, ChatColor.RED + ", " + ChatColor.GREEN));
-        if (allowedDisguises.contains("player")) {
+        if (allowedDisguises.contains("player"))
+        {
             sender.sendMessage(ChatColor.DARK_GREEN + "/disguise player <Name>");
         }
         sender.sendMessage(ChatColor.DARK_GREEN + "/disguise <DisguiseType> <Baby>");
-        if (allowedDisguises.contains("dropped_item") || allowedDisguises.contains("falling_block")) {
+        if (allowedDisguises.contains("dropped_item") || allowedDisguises.contains("falling_block"))
+        {
             sender.sendMessage(ChatColor.DARK_GREEN + "/disguiseplayer <Dropped_Item/Falling_Block> <Id> <Durability>");
         }
     }

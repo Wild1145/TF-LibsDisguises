@@ -8,10 +8,12 @@ import org.bukkit.command.CommandSender;
 
 import me.libraryaddict.disguise.LibsDisguises;
 
-public class LibsDisguisesCommand implements CommandExecutor {
+public class LibsDisguisesCommand implements CommandExecutor
+{
 
     @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args)
+    {
         sender.sendMessage(ChatColor.DARK_GREEN + "This server is running " + "Lib's Disguises v."
                 + Bukkit.getPluginManager().getPlugin("LibsDisguises").getDescription().getVersion()
                 + " by libraryaddict, maintained by NavidK0.");

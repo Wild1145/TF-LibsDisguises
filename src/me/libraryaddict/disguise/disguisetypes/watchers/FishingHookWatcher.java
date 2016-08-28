@@ -6,6 +6,7 @@ import me.libraryaddict.disguise.disguisetypes.FlagWatcher;
 
 public class FishingHookWatcher extends FlagWatcher
 {
+
     public FishingHookWatcher(Disguise disguise)
     {
         super(disguise);
@@ -22,7 +23,9 @@ public class FishingHookWatcher extends FlagWatcher
         int hooked = getValue(FlagType.FISHING_HOOK);
 
         if (hooked > 0)
+        {
             hooked--;
+        }
 
         return hooked;
     }

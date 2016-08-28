@@ -23,10 +23,14 @@ public class UpdateChecker
         String version = getSpigotVersion();
 
         if (version == null)
+        {
             return;
+        }
 
         if (!checkHigher(currentVersion, version))
+        {
             return;
+        }
 
         latestVersion = version;
     }
@@ -53,8 +57,7 @@ public class UpdateChecker
             {
                 return version;
             }
-        }
-        catch (Exception ex)
+        } catch (Exception ex)
         {
             System.out.print("[LibsDisguises] Failed to check for a update on spigot.");
         }

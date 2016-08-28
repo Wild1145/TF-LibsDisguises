@@ -27,8 +27,7 @@ public class DisguiseViewSelf implements CommandExecutor
         {
             DisguiseAPI.setViewDisguiseToggled(player, false);
             sender.sendMessage(ChatColor.GREEN + "Toggled viewing own disguise off!");
-        }
-        else
+        } else
         {
             DisguiseAPI.setViewDisguiseToggled(player, true);
             sender.sendMessage(ChatColor.GREEN + "Toggled viewing own disguise on!");

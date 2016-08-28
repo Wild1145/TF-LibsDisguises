@@ -61,6 +61,7 @@ import me.libraryaddict.disguise.disguisetypes.watchers.ZombieWatcher;
 
 public class FlagType<Y>
 {
+
     private static FlagType[] _values = new FlagType[0];
 
     public static FlagType<Boolean> AGEABLE_BABY = new FlagType<Boolean>(AgeableWatcher.class, 0, false);
@@ -92,9 +93,9 @@ public class FlagType<Y>
 
     public static FlagType<Byte> ARMORSTAND_META = new FlagType<Byte>(ArmorStandWatcher.class, 0, (byte) 0);
 
-    public static FlagType<Vector3F> ARMORSTAND_RIGHT_ARM = new FlagType<Vector3F>(ArmorStandWatcher.class, 4, new Vector3F(0,0,0));
+    public static FlagType<Vector3F> ARMORSTAND_RIGHT_ARM = new FlagType<Vector3F>(ArmorStandWatcher.class, 4, new Vector3F(0, 0, 0));
 
-    public static FlagType<Vector3F> ARMORSTAND_RIGHT_LEG = new FlagType<Vector3F>(ArmorStandWatcher.class, 6, new Vector3F(0,0,0));
+    public static FlagType<Vector3F> ARMORSTAND_RIGHT_LEG = new FlagType<Vector3F>(ArmorStandWatcher.class, 6, new Vector3F(0, 0, 0));
 
     public static FlagType<Byte> ARROW_CRITICAL = new FlagType<Byte>(ArrowWatcher.class, 0, (byte) 0);
 
@@ -121,10 +122,10 @@ public class FlagType<Y>
     public static FlagType<Integer> CREEPER_STATE = new FlagType<Integer>(CreeperWatcher.class, 0, -1);
 
     public static FlagType<Optional<ItemStack>> DROPPED_ITEM = new FlagType<Optional<ItemStack>>(DroppedItemWatcher.class, 0,
-            Optional.<ItemStack> of(new ItemStack(Material.STONE)));
+            Optional.<ItemStack>of(new ItemStack(Material.STONE)));
 
     public static FlagType<Optional<BlockPosition>> ENDER_CRYSTAL_BEAM = new FlagType<Optional<BlockPosition>>(
-            EnderCrystalWatcher.class, 0, Optional.<BlockPosition> absent());
+            EnderCrystalWatcher.class, 0, Optional.<BlockPosition>absent());
 
     public static FlagType<Boolean> ENDER_CRYSTAL_PLATE = new FlagType<Boolean>(EnderCrystalWatcher.class, 1, false);
 
@@ -133,7 +134,7 @@ public class FlagType<Y>
     public static FlagType<Boolean> ENDERMAN_AGRESSIVE = new FlagType<Boolean>(EndermanWatcher.class, 1, false);
 
     public static FlagType<Optional<WrappedBlockData>> ENDERMAN_ITEM = new FlagType<Optional<WrappedBlockData>>(
-            EndermanWatcher.class, 0, Optional.<WrappedBlockData> absent());
+            EndermanWatcher.class, 0, Optional.<WrappedBlockData>absent());
 
     public static FlagType<Integer> ENTITY_AIR_TICKS = new FlagType<Integer>(FlagWatcher.class, 1, 0);
 
@@ -151,7 +152,7 @@ public class FlagType<Y>
             BlockPosition.ORIGIN);
 
     public static FlagType<Optional<ItemStack>> FIREWORK_ITEM = new FlagType<Optional<ItemStack>>(FireworkWatcher.class, 0,
-            Optional.<ItemStack> absent());
+            Optional.<ItemStack>absent());
 
     public static FlagType<Integer> FISHING_HOOK = new FlagType<Integer>(FishingHookWatcher.class, 0, 0);
 
@@ -168,7 +169,7 @@ public class FlagType<Y>
     public static FlagType<Byte> HORSE_META = new FlagType<Byte>(HorseWatcher.class, 0, (byte) 0);
 
     public static FlagType<Optional<UUID>> HORSE_OWNER = new FlagType<Optional<UUID>>(HorseWatcher.class, 3,
-            Optional.<UUID> absent());
+            Optional.<UUID>absent());
 
     public static FlagType<Integer> HORSE_VARIANT = new FlagType<Integer>(HorseWatcher.class, 1, 0);
 
@@ -177,7 +178,7 @@ public class FlagType<Y>
     public static FlagType<Byte> IRON_GOLEM_PLAYER_CREATED = new FlagType<Byte>(IronGolemWatcher.class, 0, (byte) 0);
 
     public static FlagType<Optional<ItemStack>> ITEMFRAME_ITEM = new FlagType<Optional<ItemStack>>(ItemFrameWatcher.class, 0,
-            Optional.<ItemStack> absent());
+            Optional.<ItemStack>absent());
 
     public static FlagType<Integer> ITEMFRAME_ROTATION = new FlagType<Integer>(ItemFrameWatcher.class, 1, 0);
 
@@ -222,7 +223,7 @@ public class FlagType<Y>
     public static FlagType<Byte> SHEEP_WOOL = new FlagType<Byte>(SheepWatcher.class, 0, (byte) 0);
 
     public static FlagType<Optional<BlockPosition>> SHULKER_ATTACHED = new FlagType<Optional<BlockPosition>>(ShulkerWatcher.class,
-            1, Optional.<BlockPosition> absent());
+            1, Optional.<BlockPosition>absent());
 
     public static FlagType<Direction> SHULKER_FACING = new FlagType<Direction>(ShulkerWatcher.class, 0, Direction.DOWN);
 
@@ -240,17 +241,17 @@ public class FlagType<Y>
 
     public static FlagType<Optional<ItemStack>> SPLASH_POTION_ITEM = new FlagType<Optional<ItemStack>>(SplashPotionWatcher.class,
             1, Optional.of(new ItemStack(Material.SPLASH_POTION))); // Yeah, the '1' isn't a bug. No idea why but MC thinks
-                                                                    // there's a '0' already.
+    // there's a '0' already.
 
     public static FlagType<Optional<ItemStack>> SPLASH_POTION_ITEM_BAD = new FlagType<Optional<ItemStack>>(
             SplashPotionWatcher.class, 0, Optional.of(new ItemStack(Material.SPLASH_POTION))); // Yeah, the '1' isn't a bug. No
-                                                                                               // idea why but MC thinks there's a
-                                                                                               // '0' already.
+    // idea why but MC thinks there's a
+    // '0' already.
 
     public static FlagType<Byte> TAMEABLE_META = new FlagType<Byte>(TameableWatcher.class, 0, (byte) 0);
 
     public static FlagType<Optional<UUID>> TAMEABLE_OWNER = new FlagType<Optional<UUID>>(TameableWatcher.class, 1,
-            Optional.<UUID> absent());
+            Optional.<UUID>absent());
 
     public static FlagType<Integer> TIPPED_ARROW_COLOR = new FlagType<Integer>(ArrowWatcher.class, 1, Color.WHITE.asRGB());
 
@@ -289,7 +290,9 @@ public class FlagType<Y>
         for (FlagType flagType : values())
         {
             if (flagType.getFlagWatcher() == FlagWatcher.class)
+            {
                 continue;
+            }
 
             flagType._index += getNoIndexes(flagType.getFlagWatcher().getSuperclass());
 
@@ -298,13 +301,14 @@ public class FlagType<Y>
         // Simple verification for the dev that he's setting up the FlagType's properly.
         // All flag types should be from 0 to <Max Number> with no empty numbers.
         // All flag types should never occur twice.
-
         HashMap<Class, Integer> maxValues = new HashMap<Class, Integer>();
 
         for (FlagType type : values())
         {
             if (maxValues.containsKey(type.getFlagWatcher()) && maxValues.get(type.getFlagWatcher()) > type.getIndex())
+            {
                 continue;
+            }
 
             maxValues.put(type.getFlagWatcher(), type.getIndex());
         }
@@ -320,10 +324,14 @@ public class FlagType<Y>
                 for (FlagType type : values())
                 {
                     if (type.getIndex() != i)
+                    {
                         continue;
+                    }
 
                     if (!type.getFlagWatcher().isAssignableFrom(entry.getKey()))
+                    {
                         continue;
+                    }
 
                     if (found != null)
                     {
@@ -337,7 +345,9 @@ public class FlagType<Y>
                 }
 
                 if (found != null)
+                {
                     continue;
+                }
 
                 System.err.println(entry.getKey().getSimpleName() + " has no FlagType registered for the index " + i);
             }
@@ -349,10 +359,14 @@ public class FlagType<Y>
         for (FlagType type : values())
         {
             if (type.getIndex() != flagNo)
+            {
                 continue;
+            }
 
             if (!type.getFlagWatcher().isAssignableFrom(watcherClass))
+            {
                 continue;
+            }
 
             return type;
         }
@@ -367,7 +381,9 @@ public class FlagType<Y>
         for (FlagType type : values())
         {
             if (!type.getFlagWatcher().isAssignableFrom(watcherClass))
+            {
                 continue;
+            }
 
             list.add(type);
         }
@@ -382,7 +398,9 @@ public class FlagType<Y>
         for (FlagType type : values())
         {
             if (type.getFlagWatcher() != c)
+            {
                 continue;
+            }
 
             found++;
         }

@@ -5,6 +5,7 @@ import me.libraryaddict.disguise.disguisetypes.FlagType;
 
 public class PolarBearWatcher extends AgeableWatcher
 {
+
     public PolarBearWatcher(Disguise disguise)
     {
         super(disguise);

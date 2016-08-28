@@ -29,8 +29,7 @@ public class EndermanWatcher extends InsentientWatcher
             int data = pair.getData();
 
             return new ItemStack(id, 1, (short) data);
-        }
-        else
+        } else
         {
             return null;
         }
@@ -58,9 +57,12 @@ public class EndermanWatcher extends InsentientWatcher
         Optional<WrappedBlockData> optional;
 
         if (type == null)
-            optional = Optional.<WrappedBlockData> absent();
-        else
-            optional = Optional.<WrappedBlockData> of(WrappedBlockData.createData(type, data));
+        {
+            optional = Optional.<WrappedBlockData>absent();
+        } else
+        {
+            optional = Optional.<WrappedBlockData>of(WrappedBlockData.createData(type, data));
+        }
 
         setValue(FlagType.ENDERMAN_ITEM, optional);
     }

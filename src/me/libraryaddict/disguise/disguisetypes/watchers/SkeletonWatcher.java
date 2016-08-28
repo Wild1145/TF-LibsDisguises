@@ -10,6 +10,7 @@ import me.libraryaddict.disguise.disguisetypes.FlagType;
  */
 public class SkeletonWatcher extends InsentientWatcher
 {
+
     public SkeletonWatcher(Disguise disguise)
     {
         super(disguise);
