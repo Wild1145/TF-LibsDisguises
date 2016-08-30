@@ -154,9 +154,12 @@ public class DisguiseUtilities
             if (clonedDisguises.containsKey(key))
             {
                 clonedDisguises.remove(key);
-            } else if (DisguiseConfig.getMaxClonedDisguises() == clonedDisguises.size())
+            } else
             {
-                clonedDisguises.remove(clonedDisguises.keySet().iterator().next());
+                if (DisguiseConfig.getMaxClonedDisguises() == clonedDisguises.size())
+                {
+                    clonedDisguises.remove(clonedDisguises.keySet().iterator().next());
+                }
             }
 
             if (DisguiseConfig.getMaxClonedDisguises() > clonedDisguises.size())
@@ -275,53 +278,62 @@ public class DisguiseUtilities
                                     d.silentlyRemovePlayer(playername);
                                 }
                             }
-                        } else if (disguise.getDisguiseTarget() == TargetType.SHOW_TO_EVERYONE_BUT_THESE_PLAYERS)
+                        } else
                         {
-                            // If player is not a observer in the loop
-                            if (name != null)
+                            if (disguise.getDisguiseTarget() == TargetType.SHOW_TO_EVERYONE_BUT_THESE_PLAYERS)
                             {
-                                if (!disguise.getObservers().contains(name))
+                                // If player is not a observer in the loop
+                                if (name != null)
                                 {
-                                    d.removePlayer(name);
-                                }
-                            } else
-                            {
-                                for (String playername : new ArrayList<>(d.getObservers()))
-                                {
-                                    if (!disguise.getObservers().contains(playername))
+                                    if (!disguise.getObservers().contains(name))
                                     {
-                                        d.silentlyRemovePlayer(playername);
+                                        d.removePlayer(name);
+                                    }
+                                } else
+                                {
+                                    for (String playername : new ArrayList<>(d.getObservers()))
+                                    {
+                                        if (!disguise.getObservers().contains(playername))
+                                        {
+                                            d.silentlyRemovePlayer(playername);
+                                        }
                                     }
                                 }
                             }
                         }
-                    } else if (d.getDisguiseTarget() == TargetType.SHOW_TO_EVERYONE_BUT_THESE_PLAYERS)
+                    } else
                     {
-                        // Here you add it to the loop if they see the disguise
-                        if (disguise.getDisguiseTarget() == TargetType.HIDE_DISGUISE_TO_EVERYONE_BUT_THESE_PLAYERS)
+                        if (d.getDisguiseTarget() == TargetType.SHOW_TO_EVERYONE_BUT_THESE_PLAYERS)
                         {
-                            // Everyone who is in the disguise needs to be added to the loop
-                            if (name != null)
+                            // Here you add it to the loop if they see the disguise
+                            if (disguise.getDisguiseTarget() == TargetType.HIDE_DISGUISE_TO_EVERYONE_BUT_THESE_PLAYERS)
                             {
-                                d.addPlayer(name);
+                                // Everyone who is in the disguise needs to be added to the loop
+                                if (name != null)
+                                {
+                                    d.addPlayer(name);
+                                } else
+                                {
+                                    for (String playername : disguise.getObservers())
+                                    {
+                                        d.silentlyAddPlayer(playername);
+                                    }
+                                }
                             } else
                             {
-                                for (String playername : disguise.getObservers())
+                                if (disguise.getDisguiseTarget() == TargetType.SHOW_TO_EVERYONE_BUT_THESE_PLAYERS)
                                 {
-                                    d.silentlyAddPlayer(playername);
+                                    // This here is a paradox.
+                                    // If fed a name. I can do this.
+                                    // But the rest of the time.. Its going to conflict.
+                                    // The below is debug output. Most people wouldn't care for it.
+
+                                    // System.out.print("Cannot set more than one " + TargetType.SHOW_TO_EVERYONE_BUT_THESE_PLAYERS
+                                    // + " on a entity. Removed the old disguise.");
+                                    disguiseItel.remove();
+                                    d.removeDisguise();
                                 }
                             }
-                        } else if (disguise.getDisguiseTarget() == TargetType.SHOW_TO_EVERYONE_BUT_THESE_PLAYERS)
-                        {
-                            // This here is a paradox.
-                            // If fed a name. I can do this.
-                            // But the rest of the time.. Its going to conflict.
-                            // The below is debug output. Most people wouldn't care for it.
-
-                            // System.out.print("Cannot set more than one " + TargetType.SHOW_TO_EVERYONE_BUT_THESE_PLAYERS
-                            // + " on a entity. Removed the old disguise.");
-                            disguiseItel.remove();
-                            d.removeDisguise();
                         }
                     }
                 }
@@ -721,85 +733,91 @@ public class DisguiseUtilities
             {
                 return gameProfiles.get(playerName);
             }
-        } else if (Pattern.matches("([A-Za-z0-9_]){1,16}", origName))
+        } else
         {
-            getAddedByPlugins().add(playerName);
-
-            Player player = Bukkit.getPlayerExact(playerName);
-
-            if (player != null)
+            if (Pattern.matches("([A-Za-z0-9_]){1,16}", origName))
             {
-                WrappedGameProfile gameProfile = ReflectionManager.getGameProfile(player);
+                getAddedByPlugins().add(playerName);
 
-                if (!gameProfile.getProperties().isEmpty())
+                Player player = Bukkit.getPlayerExact(playerName);
+
+                if (player != null)
                 {
-                    gameProfiles.put(playerName, gameProfile);
+                    WrappedGameProfile gameProfile = ReflectionManager.getGameProfile(player);
 
-                    return gameProfile;
-                }
-            }
-
-            if (contactMojang)
-            {
-                // Add null so that if this is called again. I already know I'm doing something about it
-                gameProfiles.put(playerName, null);
-
-                Bukkit.getScheduler().runTaskAsynchronously(libsDisguises, new Runnable()
-                {
-                    @Override
-                    public void run()
+                    if (!gameProfile.getProperties().isEmpty())
                     {
-                        try
+                        gameProfiles.put(playerName, gameProfile);
+
+                        return gameProfile;
+                    }
+                }
+
+                if (contactMojang)
+                {
+                    // Add null so that if this is called again. I already know I'm doing something about it
+                    gameProfiles.put(playerName, null);
+
+                    Bukkit.getScheduler().runTaskAsynchronously(libsDisguises, new Runnable()
+                    {
+                        @Override
+                        public void run()
                         {
-                            final WrappedGameProfile gameProfile = lookupGameProfile(origName);
-
-                            Bukkit.getScheduler().runTask(libsDisguises, new Runnable()
+                            try
                             {
-                                @Override
-                                public void run()
+                                final WrappedGameProfile gameProfile = lookupGameProfile(origName);
+
+                                Bukkit.getScheduler().runTask(libsDisguises, new Runnable()
                                 {
-                                    if (gameProfile.getProperties().isEmpty())
+                                    @Override
+                                    public void run()
                                     {
-                                        return;
-                                    }
-
-                                    if (gameProfiles.containsKey(playerName) && gameProfiles.get(playerName) == null)
-                                    {
-                                        gameProfiles.put(playerName, gameProfile);
-                                    }
-
-                                    if (runnables.containsKey(playerName))
-                                    {
-                                        for (Object obj : runnables.remove(playerName))
+                                        if (gameProfile.getProperties().isEmpty())
                                         {
-                                            if (obj instanceof Runnable)
+                                            return;
+                                        }
+
+                                        if (gameProfiles.containsKey(playerName) && gameProfiles.get(playerName) == null)
+                                        {
+                                            gameProfiles.put(playerName, gameProfile);
+                                        }
+
+                                        if (runnables.containsKey(playerName))
+                                        {
+                                            for (Object obj : runnables.remove(playerName))
                                             {
-                                                ((Runnable) obj).run();
-                                            } else if (obj instanceof LibsProfileLookup)
-                                            {
-                                                ((LibsProfileLookup) obj).onLookup(gameProfile);
+                                                if (obj instanceof Runnable)
+                                                {
+                                                    ((Runnable) obj).run();
+                                                } else
+                                                {
+                                                    if (obj instanceof LibsProfileLookup)
+                                                    {
+                                                        ((LibsProfileLookup) obj).onLookup(gameProfile);
+                                                    }
+                                                }
                                             }
                                         }
                                     }
-                                }
-                            });
-                        } catch (Exception e)
-                        {
-                            if (gameProfiles.containsKey(playerName) && gameProfiles.get(playerName) == null)
+                                });
+                            } catch (Exception e)
                             {
-                                gameProfiles.remove(playerName);
-                                getAddedByPlugins().remove(playerName);
-                            }
+                                if (gameProfiles.containsKey(playerName) && gameProfiles.get(playerName) == null)
+                                {
+                                    gameProfiles.remove(playerName);
+                                    getAddedByPlugins().remove(playerName);
+                                }
 
-                            System.out.print("[LibsDisguises] Error when fetching " + playerName + "'s uuid from mojang: "
-                                    + e.getMessage());
+                                System.out.print("[LibsDisguises] Error when fetching " + playerName + "'s uuid from mojang: "
+                                        + e.getMessage());
+                            }
                         }
-                    }
-                });
+                    });
+                }
+            } else
+            {
+                return ReflectionManager.getGameProfile(null, origName);
             }
-        } else
-        {
-            return ReflectionManager.getGameProfile(null, origName);
         }
 
         if (runnable != null)
@@ -1336,10 +1354,13 @@ public class DisguiseUtilities
             {
                 sendSelfPacket(player, manager.createPacketConstructor(Server.ATTACH_ENTITY, 0, player, player.getVehicle())
                         .createPacket(0, player, player.getVehicle()));
-            } else if (player.getPassenger() != null && player.getEntityId() > player.getPassenger().getEntityId())
+            } else
             {
-                sendSelfPacket(player, manager.createPacketConstructor(Server.ATTACH_ENTITY, 0, player.getPassenger(), player)
-                        .createPacket(0, player.getPassenger(), player));
+                if (player.getPassenger() != null && player.getEntityId() > player.getPassenger().getEntityId())
+                {
+                    sendSelfPacket(player, manager.createPacketConstructor(Server.ATTACH_ENTITY, 0, player.getPassenger(), player)
+                            .createPacket(0, player.getPassenger(), player));
+                }
             }
 
             sendSelfPacket(player,

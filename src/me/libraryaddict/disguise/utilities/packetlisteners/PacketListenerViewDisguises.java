@@ -140,56 +140,68 @@ public class PacketListenerViewDisguises extends PacketAdapter
                         watch.setValue(a);
                     }
                 }
-            } else if (event.getPacketType() == Server.NAMED_ENTITY_SPAWN)
+            } else
             {
-                event.setCancelled(true);
-
-                PacketContainer packet = new PacketContainer(Server.ENTITY_METADATA);
-
-                StructureModifier<Object> mods = packet.getModifier();
-
-                mods.write(0, observer.getEntityId());
-
-                List<WrappedWatchableObject> watchableList = new ArrayList<>();
-                Byte b = 1 << 5;
-
-                if (observer.isSprinting())
-                {
-                    b = (byte) (b | 1 << 3);
-                }
-
-                WrappedWatchableObject watch = ReflectionManager.createWatchable(0, b);
-
-                watchableList.add(watch);
-                packet.getWatchableCollectionModifier().write(0, watchableList);
-
-                try
-                {
-                    ProtocolLibrary.getProtocolManager().sendServerPacket(observer, packet);
-                } catch (InvocationTargetException e)
-                {
-                    e.printStackTrace();
-                }
-            } else if (event.getPacketType() == Server.ANIMATION)
-            {
-                if (event.getPacket().getIntegers().read(1) != 2)
+                if (event.getPacketType() == Server.NAMED_ENTITY_SPAWN)
                 {
                     event.setCancelled(true);
-                }
-            } else if (event.getPacketType() == Server.ATTACH_ENTITY || event.getPacketType() == Server.REL_ENTITY_MOVE
-                    || event.getPacketType() == Server.REL_ENTITY_MOVE_LOOK || event.getPacketType() == Server.ENTITY_LOOK
-                    || event.getPacketType() == Server.ENTITY_TELEPORT || event.getPacketType() == Server.ENTITY_HEAD_ROTATION
-                    || event.getPacketType() == Server.ENTITY_EFFECT || event.getPacketType() == Server.ENTITY_EQUIPMENT)
-            {
-                event.setCancelled(true);
-            } else if (event.getPacketType() == Server.ENTITY_STATUS)
-            {
-                Disguise disguise = DisguiseAPI.getDisguise(event.getPlayer(), event.getPlayer());
 
-                if (disguise.isSelfDisguiseSoundsReplaced() && !disguise.getType().isPlayer()
-                        && event.getPacket().getBytes().read(0) == 2)
+                    PacketContainer packet = new PacketContainer(Server.ENTITY_METADATA);
+
+                    StructureModifier<Object> mods = packet.getModifier();
+
+                    mods.write(0, observer.getEntityId());
+
+                    List<WrappedWatchableObject> watchableList = new ArrayList<>();
+                    Byte b = 1 << 5;
+
+                    if (observer.isSprinting())
+                    {
+                        b = (byte) (b | 1 << 3);
+                    }
+
+                    WrappedWatchableObject watch = ReflectionManager.createWatchable(0, b);
+
+                    watchableList.add(watch);
+                    packet.getWatchableCollectionModifier().write(0, watchableList);
+
+                    try
+                    {
+                        ProtocolLibrary.getProtocolManager().sendServerPacket(observer, packet);
+                    } catch (InvocationTargetException e)
+                    {
+                        e.printStackTrace();
+                    }
+                } else
                 {
-                    event.setCancelled(true);
+                    if (event.getPacketType() == Server.ANIMATION)
+                    {
+                        if (event.getPacket().getIntegers().read(1) != 2)
+                        {
+                            event.setCancelled(true);
+                        }
+                    } else
+                    {
+                        if (event.getPacketType() == Server.ATTACH_ENTITY || event.getPacketType() == Server.REL_ENTITY_MOVE
+                                || event.getPacketType() == Server.REL_ENTITY_MOVE_LOOK || event.getPacketType() == Server.ENTITY_LOOK
+                                || event.getPacketType() == Server.ENTITY_TELEPORT || event.getPacketType() == Server.ENTITY_HEAD_ROTATION
+                                || event.getPacketType() == Server.ENTITY_EFFECT || event.getPacketType() == Server.ENTITY_EQUIPMENT)
+                        {
+                            event.setCancelled(true);
+                        } else
+                        {
+                            if (event.getPacketType() == Server.ENTITY_STATUS)
+                            {
+                                Disguise disguise = DisguiseAPI.getDisguise(event.getPlayer(), event.getPlayer());
+
+                                if (disguise.isSelfDisguiseSoundsReplaced() && !disguise.getType().isPlayer()
+                                        && event.getPacket().getBytes().read(0) == 2)
+                                {
+                                    event.setCancelled(true);
+                                }
+                            }
+                        }
+                    }
                 }
             }
         } catch (Exception ex)

@@ -904,51 +904,63 @@ public class ReflectionManager
             if (val instanceof ItemStack)
             {
                 return Optional.of(getNmsItem((ItemStack) val));
-            } else if (val instanceof BlockPosition)
+            } else
             {
-                BlockPosition pos = (BlockPosition) val;
+                if (val instanceof BlockPosition)
+                {
+                    BlockPosition pos = (BlockPosition) val;
+
+                    try
+                    {
+                        return Optional.of(getNmsConstructor("BlockPosition", int.class, int.class, int.class).newInstance(pos.getX(),
+                                pos.getY(), pos.getZ()));
+                    } catch (Exception ex)
+                    {
+                        ex.printStackTrace();
+                    }
+                }
+            }
+        } else
+        {
+            if (value instanceof Vector3F)
+            {
+                Vector3F angle = (Vector3F) value;
 
                 try
                 {
-                    return Optional.of(getNmsConstructor("BlockPosition", int.class, int.class, int.class).newInstance(pos.getX(),
-                            pos.getY(), pos.getZ()));
+                    return getNmsConstructor("Vector3f", float.class, float.class, float.class).newInstance(angle.getX(),
+                            angle.getY(), angle.getZ());
                 } catch (Exception ex)
                 {
                     ex.printStackTrace();
                 }
-            }
-        } else if (value instanceof Vector3F)
-        {
-            Vector3F angle = (Vector3F) value;
+            } else
+            {
+                if (value instanceof Direction)
+                {
+                    try
+                    {
+                        return (Enum) getNmsMethod("EnumDirection", "fromType1", int.class).invoke(null, ((Direction) value).ordinal());
+                    } catch (Exception ex)
+                    {
+                        ex.printStackTrace();
+                    }
+                } else
+                {
+                    if (value instanceof BlockPosition)
+                    {
+                        BlockPosition pos = (BlockPosition) value;
 
-            try
-            {
-                return getNmsConstructor("Vector3f", float.class, float.class, float.class).newInstance(angle.getX(),
-                        angle.getY(), angle.getZ());
-            } catch (Exception ex)
-            {
-                ex.printStackTrace();
-            }
-        } else if (value instanceof Direction)
-        {
-            try
-            {
-                return (Enum) getNmsMethod("EnumDirection", "fromType1", int.class).invoke(null, ((Direction) value).ordinal());
-            } catch (Exception ex)
-            {
-                ex.printStackTrace();
-            }
-        } else if (value instanceof BlockPosition)
-        {
-            BlockPosition pos = (BlockPosition) value;
-
-            try
-            {
-                return getNmsConstructor("BlockPosition", int.class, int.class, int.class).newInstance(pos.getX(),
-                        pos.getY(), pos.getZ());
-            } catch (Exception ex)
-            {
-                ex.printStackTrace();
+                        try
+                        {
+                            return getNmsConstructor("BlockPosition", int.class, int.class, int.class).newInstance(pos.getX(),
+                                    pos.getY(), pos.getZ());
+                        } catch (Exception ex)
+                        {
+                            ex.printStackTrace();
+                        }
+                    }
+                }
             }
         }
 

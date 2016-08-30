@@ -205,18 +205,27 @@ public class LibsDisguises extends JavaPlugin
                     if (Tameable.class.isAssignableFrom(entityClass))
                     {
                         watcherClass = TameableWatcher.class;
-                    } else if (Ageable.class.isAssignableFrom(entityClass))
-                    {
-                        watcherClass = AgeableWatcher.class;
-                    } else if (Creature.class.isAssignableFrom(entityClass))
-                    {
-                        watcherClass = InsentientWatcher.class;
-                    } else if (LivingEntity.class.isAssignableFrom(entityClass))
-                    {
-                        watcherClass = LivingWatcher.class;
                     } else
                     {
-                        watcherClass = FlagWatcher.class;
+                        if (Ageable.class.isAssignableFrom(entityClass))
+                        {
+                            watcherClass = AgeableWatcher.class;
+                        } else
+                        {
+                            if (Creature.class.isAssignableFrom(entityClass))
+                            {
+                                watcherClass = InsentientWatcher.class;
+                            } else
+                            {
+                                if (LivingEntity.class.isAssignableFrom(entityClass))
+                                {
+                                    watcherClass = LivingWatcher.class;
+                                } else
+                                {
+                                    watcherClass = FlagWatcher.class;
+                                }
+                            }
+                        }
                     }
                 } else
                 {
@@ -369,11 +378,14 @@ public class LibsDisguises extends JavaPlugin
                     ((Ageable) bukkitEntity).setBaby();
 
                     disguiseValues.setBabyBox(ReflectionManager.getBoundingBox(bukkitEntity));
-                } else if (bukkitEntity instanceof Zombie)
+                } else
                 {
-                    ((Zombie) bukkitEntity).setBaby(true);
+                    if (bukkitEntity instanceof Zombie)
+                    {
+                        ((Zombie) bukkitEntity).setBaby(true);
 
-                    disguiseValues.setBabyBox(ReflectionManager.getBoundingBox(bukkitEntity));
+                        disguiseValues.setBabyBox(ReflectionManager.getBoundingBox(bukkitEntity));
+                    }
                 }
 
                 disguiseValues.setEntitySize(ReflectionManager.getSize(bukkitEntity));

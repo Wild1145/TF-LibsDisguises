@@ -236,10 +236,13 @@ public class HelpDisguiseCommand extends BaseDisguiseCommand
                                                 allowed = true;
                                                 break;
                                             }
-                                        } else if (!key.contains(method.getName().toLowerCase()))
+                                        } else
                                         {
-                                            allowed = true;
-                                            break;
+                                            if (!key.contains(method.getName().toLowerCase()))
+                                            {
+                                                allowed = true;
+                                                break;
+                                            }
                                         }
                                     }
                                     if (!allowed)
@@ -253,54 +256,102 @@ public class HelpDisguiseCommand extends BaseDisguiseCommand
                                 if (c == String.class)
                                 {
                                     valueType = "String";
-                                } else if (boolean.class == c)
+                                } else
                                 {
-                                    valueType = "True/False";
-                                } else if (int.class == c)
-                                {
-                                    valueType = "Number";
-                                } else if (float.class == c || double.class == c)
-                                {
-                                    valueType = "Decimal";
-                                } else if (AnimalColor.class == c)
-                                {
-                                    valueType = "Color";
-                                } else if (ItemStack.class == c)
-                                {
-                                    valueType = "Item (id:damage)";
-                                } else if (ItemStack[].class == c)
-                                {
-                                    valueType = "4 items (id:damage,id,...)";
-                                } else if (c.getSimpleName().equals("Style"))
-                                {
-                                    valueType = "Horse Style";
-                                } else if (c.getSimpleName().equals("Color"))
-                                {
-                                    valueType = "Horse Color";
-                                } else if (c.getSimpleName().equals("Type"))
-                                {
-                                    valueType = "Ocelot type";
-                                } else if (c.getSimpleName().equals("Profession"))
-                                {
-                                    valueType = "Villager Profession";
-                                } else if (PotionEffectType.class == c)
-                                {
-                                    valueType = "Potion effect";
-                                } else if (c == int[].class)
-                                {
-                                    valueType = "number,number,number...";
-                                } else if (c == BlockFace.class)
-                                {
-                                    valueType = "direction";
-                                } else if (c == RabbitType.class)
-                                {
-                                    valueType = "rabbit type";
-                                } else if (c == BlockPosition.class)
-                                {
-                                    valueType = "three numbers";
-                                } else if (c == WrappedGameProfile.class)
-                                {
-                                    valueType = "gameprofile";
+                                    if (boolean.class == c)
+                                    {
+                                        valueType = "True/False";
+                                    } else
+                                    {
+                                        if (int.class == c)
+                                        {
+                                            valueType = "Number";
+                                        } else
+                                        {
+                                            if (float.class == c || double.class == c)
+                                            {
+                                                valueType = "Decimal";
+                                            } else
+                                            {
+                                                if (AnimalColor.class == c)
+                                                {
+                                                    valueType = "Color";
+                                                } else
+                                                {
+                                                    if (ItemStack.class == c)
+                                                    {
+                                                        valueType = "Item (id:damage)";
+                                                    } else
+                                                    {
+                                                        if (ItemStack[].class == c)
+                                                        {
+                                                            valueType = "4 items (id:damage,id,...)";
+                                                        } else
+                                                        {
+                                                            if (c.getSimpleName().equals("Style"))
+                                                            {
+                                                                valueType = "Horse Style";
+                                                            } else
+                                                            {
+                                                                if (c.getSimpleName().equals("Color"))
+                                                                {
+                                                                    valueType = "Horse Color";
+                                                                } else
+                                                                {
+                                                                    if (c.getSimpleName().equals("Type"))
+                                                                    {
+                                                                        valueType = "Ocelot type";
+                                                                    } else
+                                                                    {
+                                                                        if (c.getSimpleName().equals("Profession"))
+                                                                        {
+                                                                            valueType = "Villager Profession";
+                                                                        } else
+                                                                        {
+                                                                            if (PotionEffectType.class == c)
+                                                                            {
+                                                                                valueType = "Potion effect";
+                                                                            } else
+                                                                            {
+                                                                                if (c == int[].class)
+                                                                                {
+                                                                                    valueType = "number,number,number...";
+                                                                                } else
+                                                                                {
+                                                                                    if (c == BlockFace.class)
+                                                                                    {
+                                                                                        valueType = "direction";
+                                                                                    } else
+                                                                                    {
+                                                                                        if (c == RabbitType.class)
+                                                                                        {
+                                                                                            valueType = "rabbit type";
+                                                                                        } else
+                                                                                        {
+                                                                                            if (c == BlockPosition.class)
+                                                                                            {
+                                                                                                valueType = "three numbers";
+                                                                                            } else
+                                                                                            {
+                                                                                                if (c == WrappedGameProfile.class)
+                                                                                                {
+                                                                                                    valueType = "gameprofile";
+                                                                                                }
+                                                                                            }
+                                                                                        }
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
                                 }
 
                                 if (valueType != null)
@@ -310,9 +361,12 @@ public class HelpDisguiseCommand extends BaseDisguiseCommand
                                     if (declaring == LivingWatcher.class)
                                     {
                                         methodColor = ChatColor.AQUA;
-                                    } else if (!(FlagWatcher.class.isAssignableFrom(declaring)) || declaring == FlagWatcher.class)
+                                    } else
                                     {
-                                        methodColor = ChatColor.GRAY;
+                                        if (!(FlagWatcher.class.isAssignableFrom(declaring)) || declaring == FlagWatcher.class)
+                                        {
+                                            methodColor = ChatColor.GRAY;
+                                        }
                                     }
                                     String str = method.getName() + ChatColor.DARK_RED + "(" + ChatColor.GREEN + valueType
                                             + ChatColor.DARK_RED + ")";

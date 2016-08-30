@@ -113,14 +113,17 @@ public class FlagWatcher
                 }
 
                 value = _entityValues.get(id);
-            } else if (_backupEntityValues.containsKey(id))
+            } else
             {
-                if (_backupEntityValues.get(id) == null)
+                if (_backupEntityValues.containsKey(id))
                 {
-                    continue;
-                }
+                    if (_backupEntityValues.get(id) == null)
+                    {
+                        continue;
+                    }
 
-                value = _backupEntityValues.get(id);
+                    value = _backupEntityValues.get(id);
+                }
             }
 
             if (value != null)
@@ -223,9 +226,12 @@ public class FlagWatcher
                                     }
                                 }
                             }, 2);
-                        } else if (newHealth <= 0 && !_hasDied)
+                        } else
                         {
-                            _hasDied = true;
+                            if (newHealth <= 0 && !_hasDied)
+                            {
+                                _hasDied = true;
+                            }
                         }
                     }
                 }
@@ -400,12 +406,15 @@ public class FlagWatcher
             if (_entityValues.containsKey(i) && _entityValues.get(i) != null)
             {
                 watchable = ReflectionManager.createWatchable(i, _entityValues.get(i));
-            } else if (_backupEntityValues.containsKey(i) && _backupEntityValues.get(i) != null)
-            {
-                watchable = ReflectionManager.createWatchable(i, _backupEntityValues.get(i));
             } else
             {
-                continue;
+                if (_backupEntityValues.containsKey(i) && _backupEntityValues.get(i) != null)
+                {
+                    watchable = ReflectionManager.createWatchable(i, _backupEntityValues.get(i));
+                } else
+                {
+                    continue;
+                }
             }
 
             if (watchable == null)

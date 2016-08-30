@@ -127,15 +127,21 @@ public enum DisguiseSound
         if (sound == null)
         {
             return;
-        } else if (sound instanceof String)
-        {
-            s = (String) sound;
-        } else if (sound instanceof Sound)
-        {
-            s = ReflectionManager.getCraftSound((Sound) sound);
         } else
         {
-            throw new RuntimeException("Was given a unknown object " + sound);
+            if (sound instanceof String)
+            {
+                s = (String) sound;
+            } else
+            {
+                if (sound instanceof Sound)
+                {
+                    s = ReflectionManager.getCraftSound((Sound) sound);
+                } else
+                {
+                    throw new RuntimeException("Was given a unknown object " + sound);
+                }
+            }
         }
 
         switch (type)

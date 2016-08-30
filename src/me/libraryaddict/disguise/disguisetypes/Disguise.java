@@ -110,9 +110,12 @@ public abstract class Disguise
             if (getWatcher() instanceof AgeableWatcher)
             {
                 ((AgeableWatcher) getWatcher()).setBaby(true);
-            } else if (getWatcher() instanceof ZombieWatcher)
+            } else
             {
-                ((ZombieWatcher) getWatcher()).setBaby(true);
+                if (getWatcher() instanceof ZombieWatcher)
+                {
+                    ((ZombieWatcher) getWatcher()).setBaby(true);
+                }
             }
         }
 
@@ -120,36 +123,51 @@ public abstract class Disguise
         if (getType() == DisguiseType.WITHER_SKELETON)
         {
             ((SkeletonWatcher) getWatcher()).setType(SkeletonType.WITHER);
-        } else if (getType() == DisguiseType.STRAY)
+        } else
         {
-            ((SkeletonWatcher) getWatcher()).setType(SkeletonType.STRAY);
-        } // Else if its a zombie, but the disguise type is a zombie villager. Set the value.
-        else if (getType() == DisguiseType.ZOMBIE_VILLAGER)
-        {
-            Profession profession = null;
+            if (getType() == DisguiseType.STRAY)
+            {
+                ((SkeletonWatcher) getWatcher()).setType(SkeletonType.STRAY);
+            } // Else if its a zombie, but the disguise type is a zombie villager. Set the value.
+            else
+            {
+                if (getType() == DisguiseType.ZOMBIE_VILLAGER)
+                {
+                    Profession profession = null;
 
-            while (profession == null || profession == Profession.NORMAL || profession == Profession.HUSK)
-            {
-                profession = Profession.values()[DisguiseUtilities.random.nextInt(Profession.values().length)];
-            }
+                    while (profession == null || profession == Profession.NORMAL || profession == Profession.HUSK)
+                    {
+                        profession = Profession.values()[DisguiseUtilities.random.nextInt(Profession.values().length)];
+                    }
 
-            ((ZombieWatcher) getWatcher()).setProfession(profession);
-        } else if (getType() == DisguiseType.HUSK)
-        {
-            ((ZombieWatcher) getWatcher()).setProfession(Profession.HUSK);
-        } else if (getType() == DisguiseType.ELDER_GUARDIAN)
-        {
-            ((GuardianWatcher) getWatcher()).setElder(true);
-        } // Else if its a horse. Set the horse watcher type
-        else if (getWatcher() instanceof HorseWatcher)
-        {
-            try
-            {
-                Variant horseType = Variant.valueOf(getType().name());
-                ((HorseWatcher) getWatcher()).setVariant(horseType);
-            } catch (Exception ex)
-            {
-                // Ok.. So it aint a horse
+                    ((ZombieWatcher) getWatcher()).setProfession(profession);
+                } else
+                {
+                    if (getType() == DisguiseType.HUSK)
+                    {
+                        ((ZombieWatcher) getWatcher()).setProfession(Profession.HUSK);
+                    } else
+                    {
+                        if (getType() == DisguiseType.ELDER_GUARDIAN)
+                        {
+                            ((GuardianWatcher) getWatcher()).setElder(true);
+                        } // Else if its a horse. Set the horse watcher type
+                        else
+                        {
+                            if (getWatcher() instanceof HorseWatcher)
+                            {
+                                try
+                                {
+                                    Variant horseType = Variant.valueOf(getType().name());
+                                    ((HorseWatcher) getWatcher()).setVariant(horseType);
+                                } catch (Exception ex)
+                                {
+                                    // Ok.. So it aint a horse
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
 
@@ -407,19 +425,22 @@ public abstract class Disguise
                                 if (getEntity() != player)
                                 {
                                     ProtocolLibrary.getProtocolManager().sendServerPacket(player, packet, false);
-                                } else if (isSelfDisguiseVisible())
+                                } else
                                 {
-                                    PacketContainer selfPacket = packet.shallowClone();
-
-                                    selfPacket.getModifier().write(0, DisguiseAPI.getSelfDisguiseId());
-
-                                    try
+                                    if (isSelfDisguiseVisible())
                                     {
-                                        ProtocolLibrary.getProtocolManager().sendServerPacket((Player) getEntity(), selfPacket,
-                                                false);
-                                    } catch (InvocationTargetException e)
-                                    {
-                                        e.printStackTrace();
+                                        PacketContainer selfPacket = packet.shallowClone();
+
+                                        selfPacket.getModifier().write(0, DisguiseAPI.getSelfDisguiseId());
+
+                                        try
+                                        {
+                                            ProtocolLibrary.getProtocolManager().sendServerPacket((Player) getEntity(), selfPacket,
+                                                    false);
+                                        } catch (InvocationTargetException e)
+                                        {
+                                            e.printStackTrace();
+                                        }
                                     }
                                 }
                             }

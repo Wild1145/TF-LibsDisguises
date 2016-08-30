@@ -41,7 +41,7 @@ import me.libraryaddict.disguise.utilities.UpdateChecker;
 
 public class DisguiseListener implements Listener
 {
-    
+
     private String currentVersion;
     private HashMap<String, Boolean[]> disguiseClone = new HashMap<>();
     private HashMap<String, Disguise> disguiseEntity = new HashMap<>();
@@ -49,15 +49,15 @@ public class DisguiseListener implements Listener
     private String latestVersion;
     private LibsDisguises plugin;
     private BukkitTask updaterTask;
-    
+
     public DisguiseListener(LibsDisguises libsDisguises)
     {
         plugin = libsDisguises;
-        
+
         if (plugin.getConfig().getBoolean("NotifyUpdate"))
         {
             currentVersion = plugin.getDescription().getVersion();
-            
+
             updaterTask = Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, new Runnable()
             {
                 @Override
@@ -67,16 +67,16 @@ public class DisguiseListener implements Listener
                     {
                         UpdateChecker updateChecker = new UpdateChecker();
                         updateChecker.checkUpdate("v" + currentVersion);
-                        
+
                         latestVersion = updateChecker.getLatestVersion();
-                        
+
                         if (latestVersion == null)
                         {
                             return;
                         }
-                        
+
                         latestVersion = "v" + latestVersion;
-                        
+
                         Bukkit.getScheduler().runTask(plugin, new Runnable()
                         {
                             @Override
@@ -88,7 +88,7 @@ public class DisguiseListener implements Listener
                                     {
                                         continue;
                                     }
-                                    
+
                                     p.sendMessage(
                                             String.format(DisguiseConfig.getUpdateMessage(), currentVersion, latestVersion));
                                 }
@@ -103,38 +103,38 @@ public class DisguiseListener implements Listener
             // 20 ticks * 60 seconds * 60 minutes * 6 hours
         }
     }
-    
+
     public void cleanup()
     {
         for (BukkitRunnable r : disguiseRunnable.values())
         {
             r.cancel();
         }
-        
+
         for (Disguise d : disguiseEntity.values())
         {
             d.removeDisguise();
         }
-        
+
         disguiseClone.clear();
         updaterTask.cancel();
     }
-    
+
     private void checkPlayerCanBlowDisguise(Player entity)
     {
         Disguise[] disguises = DisguiseAPI.getDisguises(entity);
-        
+
         if (disguises.length > 0)
         {
             DisguiseAPI.undisguiseToAll(entity);
-            
+
             if (DisguiseConfig.getDisguiseBlownMessage().length() > 0)
             {
                 entity.sendMessage(DisguiseConfig.getDisguiseBlownMessage());
             }
         }
     }
-    
+
     private void chunkMove(Player player, Location newLoc, Location oldLoc)
     {
         try
@@ -144,7 +144,7 @@ public class DisguiseListener implements Listener
             {
                 ProtocolLibrary.getProtocolManager().sendServerPacket(player, packet, false);
             }
-            
+
             if (newLoc != null)
             {
                 for (HashSet<TargetedDisguise> list : DisguiseUtilities.getDisguises().values())
@@ -155,31 +155,31 @@ public class DisguiseListener implements Listener
                         {
                             continue;
                         }
-                        
+
                         if (!disguise.isPlayerDisguise())
                         {
                             continue;
                         }
-                        
+
                         if (!disguise.canSee(player))
                         {
                             continue;
                         }
-                        
+
                         if (!((PlayerDisguise) disguise).getWatcher().isSleeping())
                         {
                             continue;
                         }
-                        
+
                         if (!DisguiseUtilities.getPerverts(disguise).contains(player))
                         {
                             continue;
                         }
-                        
+
                         PacketContainer[] packets = DisguiseUtilities.getBedPackets(
                                 disguise.getEntity() == player ? newLoc : disguise.getEntity().getLocation(), newLoc,
                                 (PlayerDisguise) disguise);
-                        
+
                         if (disguise.getEntity() == player)
                         {
                             for (PacketContainer packet : packets)
@@ -187,7 +187,7 @@ public class DisguiseListener implements Listener
                                 packet.getIntegers().write(0, DisguiseAPI.getSelfDisguiseId());
                             }
                         }
-                        
+
                         for (PacketContainer packet : packets)
                         {
                             ProtocolLibrary.getProtocolManager().sendServerPacket(player, packet);
@@ -200,7 +200,7 @@ public class DisguiseListener implements Listener
             e.printStackTrace();
         }
     }
-    
+
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onAttack(EntityDamageByEntityEvent event)
     {
@@ -210,24 +210,24 @@ public class DisguiseListener implements Listener
             {
                 checkPlayerCanBlowDisguise((Player) event.getEntity());
             }
-            
+
             if (event.getDamager() instanceof Player)
             {
                 checkPlayerCanBlowDisguise((Player) event.getDamager());
             }
         }
     }
-    
+
     @EventHandler
     public void onJoin(PlayerJoinEvent event)
     {
         Player p = event.getPlayer();
-        
+
         if (latestVersion != null && p.hasPermission(DisguiseConfig.getUpdateNotificationPermission()))
         {
             p.sendMessage(String.format(DisguiseConfig.getUpdateMessage(), currentVersion, latestVersion));
         }
-        
+
         if (DisguiseConfig.isBedPacketsEnabled())
         {
             chunkMove(p, p.getLocation(), null);
@@ -245,45 +245,45 @@ public class DisguiseListener implements Listener
         {
             Location to = event.getTo();
             Location from = event.getFrom();
-            
+
             if (DisguiseUtilities.getChunkCord(to.getBlockX()) != DisguiseUtilities.getChunkCord(from.getBlockX())
                     || DisguiseUtilities.getChunkCord(to.getBlockZ()) != DisguiseUtilities.getChunkCord(from.getBlockZ()))
             {
                 chunkMove(event.getPlayer(), to, from);
             }
         }
-        
+
         if (DisguiseConfig.isStopShulkerDisguisesFromMoving())
         {
             Disguise disguise;
-            
+
             if ((disguise = DisguiseAPI.getDisguise(event.getPlayer())) != null)
             {
                 if (disguise.getType() == DisguiseType.SHULKER)
                 { // Stop Shulker disguises from moving their coordinates
                     Location from = event.getFrom();
                     Location to = event.getTo();
-                    
+
                     to.setX(from.getX());
                     to.setZ(from.getZ());
-                    
+
                     event.setTo(to);
                 }
             }
         }
     }
-    
+
     @EventHandler
     public void onQuit(PlayerQuitEvent event)
     {
         ReflectionManager.removePlayer(event.getPlayer());
     }
-    
+
     @EventHandler
     public void onRespawn(PlayerRespawnEvent event)
     {
         Disguise[] disguises = DisguiseAPI.getDisguises(event.getPlayer());
-        
+
         for (Disguise disguise : disguises)
         {
             if (disguise.isRemoveDisguiseOnDeath())
@@ -291,13 +291,13 @@ public class DisguiseListener implements Listener
                 disguise.removeDisguise();
             }
         }
-        
+
         if (DisguiseConfig.isBedPacketsEnabled())
         {
             final Player player = event.getPlayer();
-            
+
             chunkMove(event.getPlayer(), null, player.getLocation());
-            
+
             Bukkit.getScheduler().runTask(plugin, new Runnable()
             {
                 @Override
@@ -308,20 +308,20 @@ public class DisguiseListener implements Listener
             });
         }
     }
-    
+
     @EventHandler
     public void onRightClick(PlayerInteractEntityEvent event)
     {
         if (disguiseEntity.containsKey(event.getPlayer().getName()) || disguiseClone.containsKey(event.getPlayer().getName()))
         {
             Player p = event.getPlayer();
-            
+
             event.setCancelled(true);
             disguiseRunnable.remove(p.getName()).cancel();
-            
+
             Entity entity = event.getRightClicked();
             String entityName;
-            
+
             if (entity instanceof Player && !disguiseClone.containsKey(p.getName()))
             {
                 entityName = entity.getName();
@@ -329,46 +329,49 @@ public class DisguiseListener implements Listener
             {
                 entityName = DisguiseType.getType(entity).toReadable();
             }
-            
+
             if (disguiseClone.containsKey(p.getName()))
             {
                 Boolean[] options = disguiseClone.remove(p.getName());
-                
+
                 Disguise disguise = DisguiseAPI.getDisguise(p, entity);
-                
+
                 if (disguise == null && !(entity instanceof Player))
                 {
                     disguise = DisguiseAPI.constructDisguise(entity, options[0], options[1], options[2]);
-                } else if (!(entity instanceof Player))
+                } else
                 {
-                    disguise = disguise.clone();
-                } else                
-                {
-                    p.sendMessage(ChatColor.RED + "Disguising other players is forbidden.");                    
-                    event.setCancelled(true);
+                    if (!(entity instanceof Player))
+                    {
+                        disguise = disguise.clone();
+                    } else
+                    {
+                        p.sendMessage(ChatColor.RED + "Disguising other players is forbidden.");
+                        event.setCancelled(true);
+                    }
                 }
-                
+
                 char[] alphabet = "abcdefghijklmnopqrstuvwxyz".toCharArray();
-                
+
                 String reference = null;
                 int referenceLength = Math.max(2, (int) Math.ceil((0.1D + DisguiseConfig.getMaxClonedDisguises()) / 26D));
                 int attempts = 0;
-                
+
                 while (reference == null && attempts++ < 1000)
                 {
                     reference = "@";
-                    
+
                     for (int i = 0; i < referenceLength; i++)
                     {
                         reference += alphabet[DisguiseUtilities.random.nextInt(alphabet.length)];
                     }
-                    
+
                     if (DisguiseUtilities.getClonedDisguise(reference) != null)
                     {
                         reference = null;
                     }
                 }
-                
+
                 if (reference != null && DisguiseUtilities.addClonedDisguise(reference, disguise))
                 {
                     p.sendMessage(ChatColor.RED + "Constructed a " + entityName + " disguise! Your reference is " + reference);
@@ -378,67 +381,73 @@ public class DisguiseListener implements Listener
                     p.sendMessage(
                             ChatColor.RED + "Failed to store the reference due to lack of size. Please set this in the config");
                 }
-            } else if (disguiseEntity.containsKey(p.getName()))
+            } else
             {
-                Disguise disguise = disguiseEntity.remove(p.getName());
-                
-                if (disguise != null)
+                if (disguiseEntity.containsKey(p.getName()))
                 {
-                    if (disguise.isMiscDisguise() && !DisguiseConfig.isMiscDisguisesForLivingEnabled()
-                            && entity instanceof LivingEntity)
+                    Disguise disguise = disguiseEntity.remove(p.getName());
+
+                    if (disguise != null)
                     {
-                        p.sendMessage(ChatColor.RED
-                                + "Can't disguise a living entity as a misc disguise. This has been disabled in the config!");
-                    } else
-                    {
-                        if (entity instanceof Player && DisguiseConfig.isNameOfPlayerShownAboveDisguise())
+                        if (disguise.isMiscDisguise() && !DisguiseConfig.isMiscDisguisesForLivingEnabled()
+                                && entity instanceof LivingEntity)
                         {
-                            if (disguise.getWatcher() instanceof LivingWatcher)
+                            p.sendMessage(ChatColor.RED
+                                    + "Can't disguise a living entity as a misc disguise. This has been disabled in the config!");
+                        } else
+                        {
+                            if (entity instanceof Player && DisguiseConfig.isNameOfPlayerShownAboveDisguise())
                             {
-                                disguise.getWatcher().setCustomName(((Player) entity).getDisplayName());
-                                
-                                if (DisguiseConfig.isNameAboveHeadAlwaysVisible())
+                                if (disguise.getWatcher() instanceof LivingWatcher)
                                 {
-                                    disguise.getWatcher().setCustomNameVisible(true);
+                                    disguise.getWatcher().setCustomName(((Player) entity).getDisplayName());
+
+                                    if (DisguiseConfig.isNameAboveHeadAlwaysVisible())
+                                    {
+                                        disguise.getWatcher().setCustomNameVisible(true);
+                                    }
                                 }
                             }
+
+                            DisguiseAPI.disguiseToAll(entity, disguise);
+
+                            String disguiseName = "a ";
+
+                            if (disguise instanceof PlayerDisguise)
+                            {
+                                disguiseName = "the player " + ((PlayerDisguise) disguise).getName();
+                            } else
+                            {
+                                disguiseName += disguise.getType().toReadable();
+                            }
+
+                            if (disguise.isDisguiseInUse())
+                            {
+                                p.sendMessage(ChatColor.RED + "Disguised " + (entity instanceof Player ? "" : "the ") + entityName
+                                        + " as " + disguiseName + "!");
+                            } else
+                            {
+                                p.sendMessage(ChatColor.RED + "Failed to disguise " + (entity instanceof Player ? "" : "the ")
+                                        + entityName + " as " + disguiseName + "!");
+                            }
                         }
-                        
-                        DisguiseAPI.disguiseToAll(entity, disguise);
-                        
-                        String disguiseName = "a ";
-                        
-                        if (disguise instanceof PlayerDisguise)
+                    } else
+                    {
+                        if (DisguiseAPI.isDisguised(entity))
                         {
-                            disguiseName = "the player " + ((PlayerDisguise) disguise).getName();
+                            DisguiseAPI.undisguiseToAll(entity);
+
+                            p.sendMessage(ChatColor.RED + "Undisguised " + (entity instanceof Player ? "" : "the ") + entityName);
                         } else
                         {
-                            disguiseName += disguise.getType().toReadable();
-                        }
-                        
-                        if (disguise.isDisguiseInUse())
-                        {
-                            p.sendMessage(ChatColor.RED + "Disguised " + (entity instanceof Player ? "" : "the ") + entityName
-                                    + " as " + disguiseName + "!");
-                        } else
-                        {
-                            p.sendMessage(ChatColor.RED + "Failed to disguise " + (entity instanceof Player ? "" : "the ")
-                                    + entityName + " as " + disguiseName + "!");
+                            p.sendMessage(ChatColor.RED + (entity instanceof Player ? "" : "the") + entityName + " isn't disguised!");
                         }
                     }
-                } else if (DisguiseAPI.isDisguised(entity))
-                {
-                    DisguiseAPI.undisguiseToAll(entity);
-                    
-                    p.sendMessage(ChatColor.RED + "Undisguised " + (entity instanceof Player ? "" : "the ") + entityName);
-                } else
-                {
-                    p.sendMessage(ChatColor.RED + (entity instanceof Player ? "" : "the") + entityName + " isn't disguised!");
                 }
             }
         }
     }
-    
+
     @EventHandler
     public void onTarget(EntityTargetEvent event)
     {
@@ -458,21 +467,21 @@ public class DisguiseListener implements Listener
             }
         }
     }
-    
+
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onTeleport(PlayerTeleportEvent event)
     {
         final Player player = event.getPlayer();
         Location to = event.getTo();
         Location from = event.getFrom();
-        
+
         if (DisguiseConfig.isBedPacketsEnabled())
         {
             if (DisguiseUtilities.getChunkCord(to.getBlockX()) != DisguiseUtilities.getChunkCord(from.getBlockX())
                     || DisguiseUtilities.getChunkCord(to.getBlockZ()) != DisguiseUtilities.getChunkCord(from.getBlockZ()))
             {
                 chunkMove(player, null, from);
-                
+
                 Bukkit.getScheduler().runTask(plugin, new Runnable()
                 {
                     @Override
@@ -483,12 +492,12 @@ public class DisguiseListener implements Listener
                 });
             }
         }
-        
+
         if (!DisguiseAPI.isDisguised(player))
         {
             return;
         }
-        
+
         if (DisguiseConfig.isUndisguiseOnWorldChange() && to.getWorld() != null && from.getWorld() != null
                 && to.getWorld() != from.getWorld())
         {
@@ -498,25 +507,25 @@ public class DisguiseListener implements Listener
             }
         }
     }
-    
+
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onVehicleEnter(VehicleEnterEvent event)
     {
         if (event.getEntered() instanceof Player && DisguiseAPI.isDisguised((Player) event.getEntered(), event.getEntered()))
         {
             DisguiseUtilities.removeSelfDisguise((Player) event.getEntered());
-            
+
             ((Player) event.getEntered()).updateInventory();
         }
     }
-    
+
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onVehicleLeave(VehicleExitEvent event)
     {
         if (event.getExited() instanceof Player)
         {
             final Disguise disguise = DisguiseAPI.getDisguise((Player) event.getExited(), event.getExited());
-            
+
             if (disguise != null)
             {
                 Bukkit.getScheduler().runTask(plugin, new Runnable()
@@ -525,14 +534,14 @@ public class DisguiseListener implements Listener
                     public void run()
                     {
                         DisguiseUtilities.setupFakeDisguise(disguise);
-                        
+
                         ((Player) disguise.getEntity()).updateInventory();
                     }
                 });
             }
         }
     }
-    
+
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onWorldSwitch(final PlayerChangedWorldEvent event)
     {
@@ -540,12 +549,12 @@ public class DisguiseListener implements Listener
         {
             chunkMove(event.getPlayer(), event.getPlayer().getLocation(), null);
         }
-        
+
         if (!DisguiseAPI.isDisguised(event.getPlayer()))
         {
             return;
         }
-        
+
         if (DisguiseConfig.isUndisguiseOnWorldChange())
         {
             for (Disguise disguise : DisguiseAPI.getDisguises(event.getPlayer()))
@@ -556,13 +565,13 @@ public class DisguiseListener implements Listener
         {
             // Stupid hack to fix worldswitch invisibility bug
             final boolean viewSelfToggled = DisguiseAPI.isViewSelfToggled(event.getPlayer());
-            
+
             if (viewSelfToggled)
             {
                 final Disguise disguise = DisguiseAPI.getDisguise(event.getPlayer());
-                
+
                 disguise.setViewSelfDisguise(false);
-                
+
                 Bukkit.getScheduler().runTaskLater(plugin, new Runnable()
                 {
                     @Override
@@ -574,7 +583,7 @@ public class DisguiseListener implements Listener
             }
         }
     }
-    
+
     public void setDisguiseClone(final String player, Boolean[] options)
     {
         if (disguiseRunnable.containsKey(player))
@@ -583,7 +592,7 @@ public class DisguiseListener implements Listener
             run.cancel();
             run.run();
         }
-        
+
         BukkitRunnable runnable = new BukkitRunnable()
         {
             @Override
@@ -593,13 +602,13 @@ public class DisguiseListener implements Listener
                 disguiseRunnable.remove(player);
             }
         };
-        
+
         runnable.runTaskLater(plugin, 20 * DisguiseConfig.getDisguiseCloneExpire());
-        
+
         disguiseRunnable.put(player, runnable);
         disguiseClone.put(player, options);
     }
-    
+
     public void setDisguiseEntity(final String player, Disguise disguise)
     {
         if (disguiseRunnable.containsKey(player))
@@ -608,7 +617,7 @@ public class DisguiseListener implements Listener
             run.cancel();
             run.run();
         }
-        
+
         BukkitRunnable runnable = new BukkitRunnable()
         {
             @Override
@@ -618,11 +627,11 @@ public class DisguiseListener implements Listener
                 disguiseRunnable.remove(player);
             }
         };
-        
+
         runnable.runTaskLater(plugin, 20 * DisguiseConfig.getDisguiseEntityExpire());
-        
+
         disguiseRunnable.put(player, runnable);
         disguiseEntity.put(player, disguise);
     }
-    
+
 }

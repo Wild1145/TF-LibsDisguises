@@ -64,8 +64,8 @@ public class DisallowedDisguises
         {
             return enderCrystalAllowed;
         }
-        
-            return true;
-            
+
+        return true;
+
     }
 }

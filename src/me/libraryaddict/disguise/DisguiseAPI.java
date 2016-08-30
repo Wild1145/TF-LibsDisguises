@@ -48,12 +48,15 @@ public class DisguiseAPI
         if (disguiseType.isMisc())
         {
             disguise = new MiscDisguise(disguiseType);
-        } else if (disguiseType.isMob())
-        {
-            disguise = new MobDisguise(disguiseType);
         } else
         {
-            disguise = new PlayerDisguise(entity.getName());
+            if (disguiseType.isMob())
+            {
+                disguise = new MobDisguise(disguiseType);
+            } else
+            {
+                disguise = new PlayerDisguise(entity.getName());
+            }
         }
 
         FlagWatcher watcher = disguise.getWatcher();
@@ -67,9 +70,12 @@ public class DisguiseAPI
                 if (effect.getType() == PotionEffectType.INVISIBILITY)
                 {
                     watcher.setInvisible(true);
-                } else if (effect.getType() == PotionEffectType.GLOWING)
+                } else
                 {
-                    watcher.setGlowing(true);
+                    if (effect.getType() == PotionEffectType.GLOWING)
+                    {
+                        watcher.setGlowing(true);
+                    }
                 }
             }
         }
@@ -131,9 +137,12 @@ public class DisguiseAPI
                                 if (methodParam == float.class || methodParam == Float.class || methodParam == Double.class)
                                 {
                                     methodParam = double.class;
-                                } else if (methodParam == AnimalColor.class)
+                                } else
                                 {
-                                    methodParam = DyeColor.class;
+                                    if (methodParam == AnimalColor.class)
+                                    {
+                                        methodParam = DyeColor.class;
+                                    }
                                 }
                                 if (methodReturn == methodParam)
                                 {
@@ -152,16 +161,22 @@ public class DisguiseAPI
                                                         double d = (Double) value;
                                                         value = (float) d;
                                                     }
-                                                } else if (toCast == double.class)
+                                                } else
                                                 {
-                                                    if (!(value instanceof Double))
+                                                    if (toCast == double.class)
                                                     {
-                                                        float d = (Float) value;
-                                                        value = (double) d;
+                                                        if (!(value instanceof Double))
+                                                        {
+                                                            float d = (Float) value;
+                                                            value = (double) d;
+                                                        }
+                                                    } else
+                                                    {
+                                                        if (toCast == AnimalColor.class)
+                                                        {
+                                                            value = AnimalColor.valueOf(((DyeColor) value).name());
+                                                        }
                                                     }
-                                                } else if (toCast == AnimalColor.class)
-                                                {
-                                                    value = AnimalColor.valueOf(((DyeColor) value).name());
                                                 }
                                             }
                                             if (value instanceof Boolean && !(Boolean) value
@@ -229,9 +244,12 @@ public class DisguiseAPI
             if (obj instanceof String)
             {
                 ((TargetedDisguise) disguise).addPlayer((String) obj);
-            } else if (obj instanceof Player)
+            } else
             {
-                ((TargetedDisguise) disguise).addPlayer(((Player) obj).getName());
+                if (obj instanceof Player)
+                {
+                    ((TargetedDisguise) disguise).addPlayer(((Player) obj).getName());
+                }
             }
         }
 
@@ -335,9 +353,12 @@ public class DisguiseAPI
             if (obj instanceof String)
             {
                 ((TargetedDisguise) disguise).addPlayer((String) obj);
-            } else if (obj instanceof Player)
+            } else
             {
-                ((TargetedDisguise) disguise).addPlayer(((Player) obj).getName());
+                if (obj instanceof Player)
+                {
+                    ((TargetedDisguise) disguise).addPlayer(((Player) obj).getName());
+                }
             }
         }
 

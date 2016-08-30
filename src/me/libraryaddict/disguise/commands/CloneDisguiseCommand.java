@@ -34,21 +34,30 @@ public class CloneDisguiseCommand extends BaseDisguiseCommand
                         || StringUtils.startsWithIgnoreCase(option, "ignoreEnquip"))
                 {
                     doEquipment = false;
-                } else if (option.equalsIgnoreCase("doSneakSprint"))
-                {
-                    doSneak = true;
-                    doSprint = true;
-                } else if (option.equalsIgnoreCase("doSneak"))
-                {
-                    doSneak = true;
-                } else if (option.equalsIgnoreCase("doSprint"))
-                {
-                    doSprint = true;
                 } else
                 {
-                    sender.sendMessage(ChatColor.DARK_RED + "Unknown option '" + option
-                            + "' - Valid options are 'IgnoreEquipment' 'DoSneakSprint' 'DoSneak' 'DoSprint'");
-                    return true;
+                    if (option.equalsIgnoreCase("doSneakSprint"))
+                    {
+                        doSneak = true;
+                        doSprint = true;
+                    } else
+                    {
+                        if (option.equalsIgnoreCase("doSneak"))
+                        {
+                            doSneak = true;
+                        } else
+                        {
+                            if (option.equalsIgnoreCase("doSprint"))
+                            {
+                                doSprint = true;
+                            } else
+                            {
+                                sender.sendMessage(ChatColor.DARK_RED + "Unknown option '" + option
+                                        + "' - Valid options are 'IgnoreEquipment' 'DoSneakSprint' 'DoSneak' 'DoSprint'");
+                                return true;
+                            }
+                        }
+                    }
                 }
             }
             LibsDisguises.getInstance().getListener().setDisguiseClone(sender.getName(), new Boolean[]
