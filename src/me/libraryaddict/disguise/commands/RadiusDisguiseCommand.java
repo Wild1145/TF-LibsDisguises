@@ -49,16 +49,6 @@ public class RadiusDisguiseCommand extends BaseDisguiseCommand
             sender.sendMessage(ChatColor.RED + "You may not use this command from the console!");
             return true;
         }
-
-        if (args.length >= 2)
-        {
-            if (args[1].contains(":"))
-            {
-                sender.sendMessage("That disguise is forbidden.");
-                return true;
-            }
-        }
-
         HashMap<DisguiseType, HashMap<ArrayList<String>, Boolean>> map = getPermissions(sender);
 
         if (map.isEmpty())
@@ -199,47 +189,6 @@ public class RadiusDisguiseCommand extends BaseDisguiseCommand
                             disguise.getWatcher().setCustomNameVisible(true);
                         }
                     }
-                }
-
-                if (Arrays.toString(args).toLowerCase().contains("item_frame"))
-                {
-                    sender.sendMessage(ChatColor.RED + "That disguise is forbidden.");
-                    return true;
-                }
-
-                if (Arrays.toString(args).toLowerCase().contains("itemframe"))
-                {
-                    sender.sendMessage(ChatColor.RED + "That disguise is forbidden.");
-                    return true;
-
-                }
-
-                if (Arrays.toString(args).toLowerCase().contains("portal"))
-                {
-                    sender.sendMessage(ChatColor.RED + "That disguise is forbidden.");
-                    return true;
-                }
-                if (Arrays.toString(args).toLowerCase().contains("hay_block"))
-                {
-                    sender.sendMessage(ChatColor.RED + "That disguise is forbidden.");
-                    return true;
-                }
-
-                if (Arrays.toString(args).contains("90"))
-                {
-                    sender.sendMessage(ChatColor.RED + "That disguise is forbidden.");
-                    return true;
-
-                }
-
-                if (Arrays.toString(args).contains("fire"))
-                {
-                    sender.sendMessage(ChatColor.RED + "That disguise is forbidden.");
-                }
-                if (Arrays.toString(args).contains("carrot"))
-                {
-                    sender.sendMessage(ChatColor.RED + "That disguise is forbidden.");
-                    return true;
                 }
                 if (!DisallowedDisguises.disabled)
                 {
