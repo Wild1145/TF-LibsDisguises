@@ -1,20 +1,14 @@
 package me.libraryaddict.disguise;
 
+import java.util.Arrays;
+import java.util.List;
 import me.libraryaddict.disguise.disguisetypes.Disguise;
 import me.libraryaddict.disguise.disguisetypes.DisguiseType;
 
 public class DisallowedDisguises
 {
 
-    public static boolean dragonAllowed = false;
-    public static boolean playerAllowed = false;
-    public static boolean giantAllowed = false;
-    public static boolean ghastAllowed = false;
-    public static boolean witherAllowed = false;
-    public static boolean slimeAllowed = false;
-    public static boolean magmaAllowed = false;
-    public static boolean effectCloudAllowed = false;
-    public static boolean enderCrystalAllowed = false;
+    private static final List<DisguiseType> forbiddenDisguises = Arrays.asList(DisguiseType.ENDER_DRAGON, DisguiseType.PLAYER, DisguiseType.GIANT, DisguiseType.GHAST, DisguiseType.MAGMA_CUBE, DisguiseType.SLIME, DisguiseType.DROPPED_ITEM, DisguiseType.ENDER_CRYSTAL, DisguiseType.AREA_EFFECT_CLOUD, DisguiseType.WITHER);
     public static boolean disabled = false;
 
     public static boolean isAllowed(Disguise disguise)
@@ -25,47 +19,11 @@ public class DisallowedDisguises
 
     public static boolean isAllowed(DisguiseType type)
     {
-        if (type.equals(DisguiseType.ENDER_DRAGON))
+        if (forbiddenDisguises.contains(type))
         {
-            return dragonAllowed;
-        }
-        if (type.equals(DisguiseType.PLAYER))
-        {
-            return playerAllowed;
-        }
-        if (type.equals(DisguiseType.GIANT))
-        {
-            return giantAllowed;
-        }
-        if (type.equals(DisguiseType.GHAST))
-        {
-            return ghastAllowed;
-        }
-        if (type.equals(DisguiseType.WITHER))
-        {
-            return witherAllowed;
-        }
-        if (type.equals(DisguiseType.SLIME))
-        {
-            return slimeAllowed;
-        }
-
-        if (type.equals(DisguiseType.MAGMA_CUBE))
-        {
-            return magmaAllowed;
-        }
-
-        if (type.equals(DisguiseType.AREA_EFFECT_CLOUD))
-        {
-            return effectCloudAllowed;
-        }
-
-        if (type.equals(DisguiseType.ENDER_CRYSTAL))
-        {
-            return enderCrystalAllowed;
+            return false;
         }
 
         return true;
-
     }
 }
