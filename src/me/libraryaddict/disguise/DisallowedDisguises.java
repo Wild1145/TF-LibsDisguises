@@ -8,7 +8,7 @@ import me.libraryaddict.disguise.disguisetypes.DisguiseType;
 public class DisallowedDisguises
 {
 
-    private static final List<DisguiseType> forbiddenDisguises = Arrays.asList(DisguiseType.ENDER_DRAGON, DisguiseType.PLAYER, DisguiseType.GIANT, DisguiseType.GHAST, DisguiseType.MAGMA_CUBE, DisguiseType.SLIME, DisguiseType.DROPPED_ITEM, DisguiseType.ENDER_CRYSTAL, DisguiseType.AREA_EFFECT_CLOUD, DisguiseType.WITHER);
+    private static final List<DisguiseType> forbiddenDisguises = Arrays.asList(DisguiseType.ITEM_FRAME, DisguiseType.ENDER_DRAGON, DisguiseType.PLAYER, DisguiseType.GIANT, DisguiseType.GHAST, DisguiseType.MAGMA_CUBE, DisguiseType.SLIME, DisguiseType.DROPPED_ITEM, DisguiseType.ENDER_CRYSTAL, DisguiseType.AREA_EFFECT_CLOUD, DisguiseType.WITHER);
     public static boolean disabled = false;
 
     public static boolean isAllowed(Disguise disguise)
